@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "my-ec-app-monorepo",
   "private": true,
   "scripts": {
     "build": "turbo build",
