@@ -1,20 +1,12 @@
-# Turborepo starter
+# ECサイトモノレポ管理
+ ECサイトをNext.jsとReact Nativeで実装するため、Turborepoでモノレポ構成にしています
 
-This is an official starter Turborepo.
+### メモ
+モのレポの設定については勉強中
 
-## Using this example
 
-Run the following command:
 
-```sh
-npx create-turbo@latest
-```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
 
 - `docs`: a [Next.js](https://nextjs.org/) app
 - `web`: another [Next.js](https://nextjs.org/) app
@@ -32,23 +24,7 @@ This Turborepo has some additional tools already setup for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
-### Build
 
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
 
 ### Remote Caching
 
