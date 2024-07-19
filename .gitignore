@@ -4,6 +4,8 @@
 node_modules
 .pnp
 .pnp.js
+.yarn/install-state.gz
+
 
 # Local env files
 .env
@@ -26,6 +28,7 @@ coverage
 out/
 build
 dist
+.yarn
 
 
 # Debug
