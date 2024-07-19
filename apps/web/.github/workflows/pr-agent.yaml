@@ -1,0 +1,40 @@
+# This workflow enables developers to call PR-Agents `/[actions]` in PR's comments and upon PR creation.
+# Learn more at https://www.codium.ai/pr-agent/
+# This is v0.2 of this workflow file
+
+name: PR-Agent
+
+on:
+  # プルリクが「オープン」「再オープン」「コミット追加」時に自動起動
+  pull_request:
+    types: [opened, reopened, synchronize]
+  # イシューの「作成」「編集」時
+  issue_comment:
+    types: [created, edited]
+  workflow_dispatch:
+
+# GITHUB_TOKEN の権限がデフォルトで2つ必要です
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  pr_agent_job:
+    runs-on: ubuntu-latest
+    name: Run pr agent on every pull request
+    steps:
+      - name: PR Agent action step
+        id: pragent
+        # PR Agent の main ブランチを指定します
+        uses:
+          Codium-ai/pr-agent@main
+          # この環境変数で細かいカスタマイズができます。
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          # OPENAI_ORG: ${{ secrets.OPENAI_ORG }} # optional
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PINECONE.API_KEY: ${{ secrets.PINECONE_API_KEY }}
+          # PINECONE.ENVIRONMENT: ${{ secrets.PINECONE_ENVIRONMENT }}
+          GITHUB_ACTION_CONFIG.AUTO_DESCRIBE: true
+          GITHUB_ACTION_CONFIG.AUTO_REVIEW: true
+          GITHUB_ACTION_CONFIG.AUTO_IMPROVE: true

@@ -1,0 +1,29 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // 文字列はダブルクォートで囲むように警告を表示
+    "quotes": ["warn", "double"],
+    // セミコロンを常に使用するように警告を表示
+    "semi": ["warn", "always"], // コードの一貫性を保つために、セミコロンを強制します
+    // 未使用の変数がある場合に警告を表示
+    "no-unused-vars": ["warn"], // 未使用の変数を警告します。コードのクリーンアップに役立ちます
+    // 末尾にカンマを付けるように警告を表示
+    "comma-dangle": ["warn", "always-multiline"], // マルチラインのオブジェクトや配列には末尾のカンマを強制します
+    // コンソールログを許可
+    "no-console": ["off"], // 開発中はコンソールログを許可します。プロダクションビルドでは注意が必要です
+    // インデントはスペース2個で統一
+    "indent": ["warn", 2], // インデントはスペース2個を推奨します
+    // シングルラインの関数内でreturnステートメントの前に必ずブロックを使用
+    "curly": ["warn", "all"], // return, if, elseなどのブロックを一貫して使用するように警告を表示します
+    // ReactのJSXファイルはjsx-extensionを使用
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }], // JSXを含むファイルの拡張子を指定します
+    // 不要なプロップタイプの検証を警告
+    "react/prop-types": "off", // TypeScriptを使用している場合、prop-typesの検証は不要です
+    // 不要なImportを削除
+    "import/no-unresolved": "off", // 実際のプロジェクトの構成に応じて設定します
+    // フックのルールを守る
+    "react-hooks/rules-of-hooks": "error", // フックのルールを守るように強制します
+    // フックの依存配列を正しく指定する
+    "react-hooks/exhaustive-deps": "warn" // フックの依存配列が正しく指定されていない場合に警告を表示します
+  }
+}
