@@ -22,6 +22,7 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 packages/
 ├── ui/                  # 共有 UI コンポーネント
 ├── utils/               # 共通ユーティリティ関数
+├── lib/                 # 共通ライブラリ
 ├── eslint-config/       # 共通 ESLint 設定
 ├── typescript-config/   # 共通 TypeScript 設定　
 ├── api-client/          # 共通 API クライアント　※未使用

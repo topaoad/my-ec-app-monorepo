@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NextAuthProvider from "@/providers/NextAuth";
+import NextAuthProvider from "@/app/components/NextAuthProvider";
 import { Suspense } from "react";
 import UserProfile from "@/app/components/UserProfile";
 import JotaiProvider from "@/app/components/JotaiProvider";

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC, ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/utils/twMerge";
 import { cva } from "class-variance-authority";
 import { Button } from "@mantine/core";
 import { ShoppingCart, Heart, Check, AlertCircle } from "lucide-react";
