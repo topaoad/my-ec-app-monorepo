@@ -14,9 +14,19 @@
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
+
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-### Utilities
+### packages配下のディレクトリ構成
+```
+packages/
+├── ui/                  # 共有 UI コンポーネント
+├── utils/               # 共通ユーティリティ関数
+├── eslint-config/       # 共通 ESLint 設定
+├── typescript-config/   # 共通 TypeScript 設定　
+├── api-client/          # 共通 API クライアント　※未使用
+└── theme/               # 共通テーマ定義　※未使用
+```
 
 This Turborepo has some additional tools already setup for you:
 
