@@ -33,7 +33,7 @@ export async function Products({ offset }: { offset?: number }) {
     // <Suspense fallback={<div>Loading中・・・</div>}>
     <div className="container mx-auto px-4 max-w-[900px]" >
       <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">商品一覧</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {products.map((product) => (
           <Link href={`/products/${product.id}`} key={product.id}>
             <Card key={product.id} className="flex flex-col h-full">

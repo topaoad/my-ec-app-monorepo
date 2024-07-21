@@ -7,14 +7,11 @@ import { Button } from "@mantine/core";
 import { ShoppingCart, Heart, Check, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Product } from "@/app/libs/microcms";
-import { Toast } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { addToFavorites } from "@/app/libs/actions/favorites";
 
-
-const handleAddToFavorites = (productId: string) => {
-  // お気に入りに追加する処理をここに実装
-  console.log(`Product ${productId} added to favorites`);
-};
 
 interface CardFooterAreaProps {
   product: Product;
@@ -23,8 +20,49 @@ interface CardFooterAreaProps {
 const CardFooterArea: FC<CardFooterAreaProps> = ({
   product,
 }) => {
-
+  const { data: session } = useSession();
+  const router = useRouter();
   const { toast } = useToast();
+
+  const handleAddToFavorites = async (productId: string) => {
+    if (!session) {
+      toast({
+        title: "ログインが必要です",
+        description: "お気に入りに追加するにはログインしてください。",
+        duration: 2000,
+      });
+      router.push("/signin");
+      return;
+    }
+
+
+    try {
+      const result = await addToFavorites({ productId });
+      if (result.success) {
+        toast({
+          title: "お気に入りに追加しました",
+          description: `${product.title} をお気に入りに追加しました`,
+          duration: 2000,
+        });
+      } else if (result.error === "ALREADY_FAVORITED") {
+        toast({
+          title: "お気に入りに追加済みです",
+          description: "この商品はすでに登録済みです",
+          duration: 2000,
+        });
+      } else {
+        throw new Error("Failed to add to favorites");
+      }
+    } catch (error) {
+      console.error("お気に入りの追加に失敗しました", error);
+      toast({
+        title: "エラー",
+        description: "お気に入りの追加に失敗しました。もう一度お試しください。",
+        duration: 2000,
+      });
+    }
+  };
+
 
   const handleAddToCart = (productId: string) => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");

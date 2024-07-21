@@ -3,13 +3,14 @@ import { getServerSession } from "next-auth/next";
 import { prisma } from "@/app/libs/prisma";
 import { z } from "zod";
 import { getProduct } from "@/app/libs/microcms";
+import { authOptions } from "../auth/[...nextauth]/newroutebu";
 
 const FavoriteInput = z.object({
   productId: z.string(),
 });
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return NextResponse.json({ error: "認証が必要です" }, { status: 401 });
