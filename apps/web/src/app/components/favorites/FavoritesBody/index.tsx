@@ -40,7 +40,6 @@ const FaviritesBody: FC<FaviritesProps> = ({ favoriteProducts }) => {
 
   const handleRemoveFavorite = async ({ productId, productTitle }: FavoriteItemProps) => {
     setIsLoading(true);
-    localStorage.setItem("cart", JSON.stringify([]));
     try {
       const result = await removeFromFavorites({ productId });
       if (result.success) {
