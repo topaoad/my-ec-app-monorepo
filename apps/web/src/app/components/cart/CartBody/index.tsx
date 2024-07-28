@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, FC } from "react";
+import React, { useState, useEffect, FC, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/app/libs/microcms";
-import { MicroCMSContentId, MicroCMSDate, MicroCMSListResponse } from "microcms-js-sdk";
+import { MicroCMSListResponse } from "microcms-js-sdk";
 import { cartAtom, updateCartQuantityAtom, removeFromCartAtom, CartItem } from "@/store/cartAtom";
 import { useAtom, useAtomValue } from "jotai";
 import { CheckoutModal } from "../../Modal/CheckoutModal";
@@ -14,18 +14,28 @@ interface CartBodyProps {
 }
 
 const CartBody: FC<CartBodyProps> = ({ products }) => {
+  const [isClient, setIsClient] = useState(false);
   const cart = useAtomValue(cartAtom);
   const [, updateCartQuantity] = useAtom(updateCartQuantityAtom);
   const [, removeFromCart] = useAtom(removeFromCartAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  const cartItems: CartItem[] = cart.map(item => {
-    const product = products.find(p => p.id === item.id);
-    return product ? { ...product, quantity: item.quantity } : null;
-  }).filter((item): item is CartItem => item !== null);
+  const cartItems: CartItem[] = useMemo(() => {
+    if (!isClient) { return []; }
+    return cart.map(item => {
+      const product = products.find(p => p.id === item.id);
+      return product ? { ...product, quantity: item.quantity } : null;
+    }).filter((item): item is CartItem => item !== null);
+  }, [cart, products, isClient]);
 
-  const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalAmount = useMemo(() =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
+    [cartItems]
+  );
 
   const handleQuantityChange = (id: string, quantity: number) => {
     updateCartQuantity({ id, quantity });
@@ -38,6 +48,10 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   const handleCheckout = () => {
     setIsModalOpen(true);
   };
+
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto px-4 max-w-7xl">
@@ -74,7 +88,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
             <CheckoutModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              cart={cart}
+              cart={cartItems}
               products={products}
               totalAmount={totalAmount}
             />
@@ -83,9 +97,8 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
             <input type="hidden" name="email" value="sample@gmail.com" /> */}
         </div>
         // </form>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 
