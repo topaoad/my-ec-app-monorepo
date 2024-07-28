@@ -31,12 +31,12 @@ export async function Products({ offset }: { offset?: number }) {
   const { totalCount, limit } = args;
   return (
     // <Suspense fallback={<div>Loading中・・・</div>}>
-    <div className="container mx-auto px-4 max-w-[900px]" >
+    <div className="" >
       <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">商品一覧</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {products.map((product) => (
-          <Link href={`/products/${product.id}`} key={product.id}>
-            <Card key={product.id} className="flex flex-col h-full">
+          <Card key={product.id} className="flex flex-col h-full">
+            <Link className="flex flex-col h-full" href={`/products/${product.id}`} key={product.id} >
               <CardHeader className="p-0">
                 {product.image && (
                   <div className="relative w-full h-48">
@@ -54,14 +54,16 @@ export async function Products({ offset }: { offset?: number }) {
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{product.description}</p>
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-purple-700 dark:text-purple-300">
-                    {product.price.toLocaleString()} 円
+                    価格:{product.price.toLocaleString()} 円
                   </span>
                   <Badge variant="outline">残り {product.inventory} </Badge>
                 </div>
               </CardContent>
-              <CardFooterArea product={product} />
-            </Card>
-          </Link>
+            </Link>
+            <CardFooterArea product={product} />
+          </Card>
+
+
         ))}
       </div>
       <div className="flex justify-center items-center my-8">

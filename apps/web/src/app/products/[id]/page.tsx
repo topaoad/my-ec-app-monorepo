@@ -24,7 +24,7 @@ export async function generateMetadata(
     };
   }
   return {
-    title: `${title?.absolute} `,
+    title: `${product.title} | ${title?.absolute}`,
   };
 }
 
@@ -45,67 +45,48 @@ export default async function Product({
   if (!product) {
     notFound();
   }
+
+  const handleAddToCart = async () => {
+    // カートに追加する処理をここに実装
+    // 例: await addToCart(product.id);
+  };
+
   return (
-    <div className="">
-      {product.image ? (
-        <div className="relative w-full h-48">
-          <Image
-            src={product.image.url}
-            alt={`Product image of ${product.title}`}
-            // fillで代替
-            // width={product.image.width}
-            // height={product.image.height}
-            fill
-            className="rounded-t-lg object-cover"
-          />
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="md:w-1/2">
+          {product.image ? (
+            <div className="relative w-full h-96">
+              <Image
+                src={product.image.url}
+                alt={`Product image of ${product.title}`}
+                fill
+                className="rounded-lg object-cover"
+              />
+            </div>
+          ) : null}
         </div>
-      ) : null}
-      <form action={`/api/${productId}/checkout`} method="POST">
-        <h1> {product.title}</h1>
-        <p>
-          {product.price.toLocaleString()} {product.inventory}
-        </p>
-        <div>
-          <button
-            disabled={!!draftKey}
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        <div className="md:w-1/2">
+          <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
+          <p className="text-2xl font-semibold mb-4">
+            {product.price.toLocaleString()}円
+          </p>
+          <p className="mb-4">
+            在庫状況: {product.inventory > 0 ? `残り${product.inventory}点` : '在庫切れ'}
+          </p>
+          {/* <button
+            onClick={handleAddToCart}
+            disabled={product.inventory === 0}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mb-4 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            Buy now
-          </button>
+            {product.inventory > 0 ? 'カートに追加' : '在庫切れ'}
+          </button> */}
+          <div className="bg-gray-100 p-4 rounded-lg">
+            <h2 className="text-xl font-semibold mb-2">商品説明</h2>
+            <p className="text-gray-700">{product.description}</p>
+          </div>
         </div>
-        <input type="hidden" name="amount" value={product.price} />
-        <input type="hidden" name="email" value="sample@gmail.com" />
-        {/* <input type='hidden' name='currency' value={product.currency} />
-        <input type='hidden' name='name' value={product.name} /> */}
-        {/* {
-          product.featured_image ? (
-            <input type='hidden' name='image' value={product.featured_image.url} />
-          ) : null
-        } */}
-      </form>
-      {product.description ? (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: product.description,
-          }}
-        />
-      ) : null}
-      {/* {product.images.length > 0 ? <h2>Product images</h2> : null}
-      {
-        product.images.map((image) => {
-          return (
-            <img
-              key={image.url}
-              src={image.url}
-              alt={`Product images of ${product?.name}`}
-              width={image.width}
-              height={image.height}
-              className='rounded-t-lg'
-            />
-          )
-        })
-      } */}
+      </div>
     </div>
   );
 }

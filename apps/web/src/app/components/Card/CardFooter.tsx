@@ -11,6 +11,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { addToFavorites } from "@/app/libs/actions/favorites";
+import { useAddToCart } from "@/app/hooks/useAddToCart";
+import { useAddToFavorite } from "@/app/hooks/useAddToFavorite";
 
 
 interface CardFooterAreaProps {
@@ -24,77 +26,8 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleAddToFavorites = async (productId: string) => {
-    if (!session) {
-      toast({
-        title: "ログインが必要です",
-        description: "お気に入りに追加するにはログインしてください。",
-        duration: 2000,
-      });
-      router.push("/signin");
-      return;
-    }
-
-
-    try {
-      const result = await addToFavorites({ productId });
-      if (result.success) {
-        toast({
-          title: "お気に入りに追加しました",
-          description: `${product.title} をお気に入りに追加しました`,
-          duration: 2000,
-        });
-      } else if (result.error === "ALREADY_FAVORITED") {
-        toast({
-          title: "お気に入りに追加済みです",
-          description: "この商品はすでに登録済みです",
-          duration: 2000,
-        });
-      } else {
-        throw new Error("Failed to add to favorites");
-      }
-    } catch (error) {
-      console.error("お気に入りの追加に失敗しました", error);
-      toast({
-        title: "エラー",
-        description: "お気に入りの追加に失敗しました。もう一度お試しください。",
-        duration: 2000,
-      });
-    }
-  };
-
-
-  const handleAddToCart = (productId: string) => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    // 商品IDがカート内に存在するかチェック
-    const isAlreadyInCart = cart.includes(productId);
-
-    if (!isAlreadyInCart) {
-      cart.push(productId);
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      // ローカルストレージの変更イベントを発火
-      window.dispatchEvent(new Event("storage"));
-    }
-    toast({
-      title: isAlreadyInCart ? "既にカートに追加済みです" : "カートに追加しました",
-      description: (
-        <div className="flex items-center">
-          {isAlreadyInCart ? (
-            <AlertCircle className="w-4 h-4 mr-2 text-yellow-500" />
-          ) : (
-            <Check className="w-4 h-4 mr-2 text-green-500" />
-          )}
-          <span>
-            {isAlreadyInCart
-              ? `${product.title} は既にカートに入っています`
-              : `${product.title} をカートに追加しました`}
-          </span>
-        </div>
-      ),
-      duration: 2000, // 2秒間表示
-    });
-  };
+  const { handleAddToCart } = useAddToCart();
+  const { handleAddToFavorite } = useAddToFavorite();
 
   return (
     <>
@@ -103,7 +36,7 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
           <Button
             onClick={(e) => {
               e.preventDefault();
-              handleAddToCart(product.id);
+              handleAddToCart(product);
             }}
             className=" px-2"
           >
@@ -116,7 +49,7 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
             variant="outline"
             onClick={(e) => {
               e.preventDefault();
-              handleAddToFavorites(product.id);
+              handleAddToFavorite(product);
             }}
             className=" px-2"
           >
