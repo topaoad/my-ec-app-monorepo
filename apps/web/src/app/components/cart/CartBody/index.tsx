@@ -66,7 +66,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
 
           <div className="text-right">
             <p className="text-xl font-bold">
-              合計: {cartItems.reduce((sum, item) => sum + item.price, 0).toLocaleString()}円
+              合計: {totalAmount.toLocaleString()}円
             </p>
             <Button variant="custom" size="lg" className="mt-4" onClick={handleCheckout}>
               購入する
