@@ -4,6 +4,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -12,26 +13,23 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["./src/*"],
       "@repo/*": ["../../packages/*"]
     }
   },
-  // zod-prisma-typesのための設定
-  "strict": true,
-  "strictNullChecks": true,
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/utils/twMerge.ts"
+    "../../packages/utils/twMerge.ts",
+    "types/**/*.ts" // カスタム型定義ファイルを含める
   ],
   "exclude": ["node_modules"]
 }

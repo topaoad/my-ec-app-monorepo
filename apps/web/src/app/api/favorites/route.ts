@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { prisma } from "@/app/libs/prisma";
 import { z } from "zod";
 import { getProduct } from "@/app/libs/microcms";
-import { authOptions } from "../auth/[...nextauth]/newroutebu";
+import { authOptions } from "../../libs/auth";
 
 const FavoriteInput = z.object({
   productId: z.string(),

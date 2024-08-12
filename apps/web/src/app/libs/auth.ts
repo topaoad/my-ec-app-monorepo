@@ -1,14 +1,14 @@
-import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import LineProvider from "next-auth/providers/line";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { NextAuthOptions } from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import { randomUUID, randomBytes } from "crypto";
 
 const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
+  // export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -22,23 +22,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       // Initial sign in
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string;
       }
       return session;
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ url, baseUrl }: any) {
       return baseUrl;
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile }: any) {
       console.log("user情報⭐️", user);
       console.log("account情報⭐️", account);
       console.log("profile情報⭐️", profile);
