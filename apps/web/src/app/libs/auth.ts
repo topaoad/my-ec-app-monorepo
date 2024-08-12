@@ -23,15 +23,27 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }: any) {
-      // Initial sign in
       if (user) {
         token.id = user.id;
+        // 初回ログインユーザーかどうかを判定
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { lastLogin: true },
+        });
+        token.isNewUser = !dbUser?.lastLogin;
+
+        // Update lastLogin
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLogin: new Date() },
+        });
       }
       return token;
     },
     async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.isNewUser = token.isNewUser as boolean;
       }
       return session;
     },
@@ -39,9 +51,6 @@ export const authOptions: NextAuthOptions = {
       return baseUrl;
     },
     async signIn({ user, account, profile }: any) {
-      console.log("user情報⭐️", user);
-      console.log("account情報⭐️", account);
-      console.log("profile情報⭐️", profile);
       return true;
     },
   },

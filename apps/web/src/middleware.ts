@@ -1,16 +1,26 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
+
+
+
 export default withAuth(
   async function middleware(req) {
     const token = req.nextauth.token;
     const isAuthPage = req.nextUrl.pathname.startsWith("/signin");
-    const isProtectedPage = req.nextUrl.pathname.startsWith("/profile") || req.nextUrl.pathname.startsWith("/orders");
+    const isProfilePage = req.nextUrl.pathname.startsWith("/profile");
+    const isProtectedPage = req.nextUrl.pathname.startsWith("/profile") || req.nextUrl.pathname.startsWith("/orders") || req.nextUrl.pathname.startsWith("/favorites");
 
     // ログイン済みユーザーがサインインページにアクセスした場合、ホームページにリダイレクト
     if (token && isAuthPage) {
       return NextResponse.redirect(new URL("/", req.url));
     }
+
+    // 初回ログインユーザーがプロフィールページ以外にアクセスした場合、プロフィールページにリダイレクト
+    if (token && token?.isNewUser && !isProfilePage) {
+      return NextResponse.redirect(new URL("/profile", req.url));
+    }
+
 
     // 未ログインユーザーが保護されたページにアクセスした場合、サインインページにリダイレクト
     if (!token && isProtectedPage) {
