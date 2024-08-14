@@ -12,6 +12,7 @@ import { Inter as FontSans } from "next/font/google";
 import Header from "@/app/components/layouts/Header";
 import { ToastProvider } from "@/components/ui/toast";
 import { Toaster } from "@/components/ui/toaster";
+import CustomContainer from "./components/CustomContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,9 @@ export default function RootLayout({
               <MantineProviderWrapper>
                 <ToastProvider>
                   <Header />
-                  <Suspense fallback={<div>loading...</div>}>{children}</Suspense>
+                  <CustomContainer>
+                    <Suspense fallback={<div>loading...</div>}>{children}</Suspense>
+                  </CustomContainer>
                   <Toaster />
                 </ToastProvider>
               </MantineProviderWrapper>

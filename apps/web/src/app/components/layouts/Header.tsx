@@ -6,27 +6,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Home, ShoppingCart, Heart, Clock, User, ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/app/components/icons/Logo";
+import { cartAtom } from "@/store/cartAtom";
+import { useAtomValue } from "jotai";
 
 const Header: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0);
-
-  useEffect(() => {
-    const updateCartCount = () => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCartItemCount(cart.length);
-    };
-
-    updateCartCount();
-    window.addEventListener("storage", updateCartCount);
-
-    return () => {
-      window.removeEventListener("storage", updateCartCount);
-    };
-  }, []);
+  const cart = useAtomValue(cartAtom);
 
   const navItems = [
     { icon: Home, label: "ホーム", href: "/" },
@@ -52,9 +40,9 @@ const Header: React.FC = () => {
           onClick={() => handleNavItemClick(item.href)}
           className="relative flex items-center text-gray-600 hover:text-purple-600 md:flex-col md:items-center w-full md:w-auto py-2 md:py-0"
         >
-          {cartItemCount > 0 && item.label === "買い物かご" && (
+          {cart.length > 0 && item.label === "買い物かご" && (
             <span className="absolute -top-1 left-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              {cartItemCount}
+              {cart.length}
             </span>
           )}
           <item.icon className="w-6 h-6 mr-3 md:mr-0" />

@@ -1,7 +1,10 @@
 import { createClient } from "microcms-js-sdk";
 import type {
   CustomRequestInit,
+  MicroCMSContentId,
+  MicroCMSDate,
   MicroCMSImage,
+  MicroCMSListResponse,
   MicroCMSQueries,
 } from "microcms-js-sdk";
 
@@ -39,7 +42,8 @@ export type Product = {
   price: number;
   inventory: number;
   day: string;
-};
+} & MicroCMSContentId & MicroCMSDate;
+
 export const listProducts = async (queries: MicroCMSQueries = {}) => {
   const pageLimit = 4;
   const offset = queries?.offset ? queries?.offset * pageLimit : 0;
@@ -93,6 +97,15 @@ export type SiteInfo = {
   description: string;
   feature_image?: MicroCMSImage;
 };
+
+export async function getProductsByIds(ids: string[]): Promise<MicroCMSListResponse<Product>["contents"]> {
+  const response = await client.getList<Product>({
+    endpoint: "products",
+    queries: { ids: ids.join(",") },
+  });
+
+  return response.contents;
+}
 
 // export const getSiteInfo = async (): Promise<SiteInfo> => {
 //   return client.get<SiteInfo>({

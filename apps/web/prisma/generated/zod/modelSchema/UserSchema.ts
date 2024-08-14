@@ -41,6 +41,7 @@ export const UserSchema = z.object({
   email: z.string().nullish(),
   emailVerified: z.coerce.date().nullish(),
   image: z.string().nullish(),
+  lastLogin: z.coerce.date().nullish(),
 })
 
 export type User = z.infer<typeof UserSchema>

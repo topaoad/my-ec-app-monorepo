@@ -49,7 +49,7 @@
 - マイグレーションファイルを作成する（--name の後ろにファイル名）
   npx prisma migrate dev --name
   このコマンドの実行により、npx zod-prisma-types が実行されて、スキーマから型を生成する
-  ※npx prisma migrate dev --name は、スキーマファイル (schema.prisma) に記述された最新のスキーマ定義と、prisma/migrations ディレクトリ内にある既存のマイグレーションファイルを比較します。
+  ※npx prisma migrate dev --name は、スキーマファイル (schema.prisma) に記述された最新のスキーマね定義と、prisma/migrations ディレクトリ内にある既存のマイグレーションファイルを比較します。
 - マイグレーションファイルを適用（本番環境適用時、他の人が作成したマイグレーションファイル適用）
   npx prisma migrate deploy
 - seed.ts のレコードをテーブルに適用する

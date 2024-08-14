@@ -7,14 +7,13 @@ import { Button } from "@mantine/core";
 import { ShoppingCart, Heart, Check, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Product } from "@/app/libs/microcms";
-import { Toast } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { addToFavorites } from "@/app/libs/actions/favorites";
+import { useAddToCart } from "@/app/hooks/useAddToCart";
+import { useAddToFavorite } from "@/app/hooks/useAddToFavorite";
 
-
-const handleAddToFavorites = (productId: string) => {
-  // お気に入りに追加する処理をここに実装
-  console.log(`Product ${productId} added to favorites`);
-};
 
 interface CardFooterAreaProps {
   product: Product;
@@ -23,40 +22,12 @@ interface CardFooterAreaProps {
 const CardFooterArea: FC<CardFooterAreaProps> = ({
   product,
 }) => {
-
+  const { data: session } = useSession();
+  const router = useRouter();
   const { toast } = useToast();
 
-  const handleAddToCart = (productId: string) => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    // 商品IDがカート内に存在するかチェック
-    const isAlreadyInCart = cart.includes(productId);
-
-    if (!isAlreadyInCart) {
-      cart.push(productId);
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      // ローカルストレージの変更イベントを発火
-      window.dispatchEvent(new Event("storage"));
-    }
-    toast({
-      title: isAlreadyInCart ? "既にカートに追加済みです" : "カートに追加しました",
-      description: (
-        <div className="flex items-center">
-          {isAlreadyInCart ? (
-            <AlertCircle className="w-4 h-4 mr-2 text-yellow-500" />
-          ) : (
-            <Check className="w-4 h-4 mr-2 text-green-500" />
-          )}
-          <span>
-            {isAlreadyInCart
-              ? `${product.title} は既にカートに入っています`
-              : `${product.title} をカートに追加しました`}
-          </span>
-        </div>
-      ),
-      duration: 2000, // 2秒間表示
-    });
-  };
+  const { handleAddToCart } = useAddToCart();
+  const { handleAddToFavorite } = useAddToFavorite();
 
   return (
     <>
@@ -65,7 +36,7 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
           <Button
             onClick={(e) => {
               e.preventDefault();
-              handleAddToCart(product.id);
+              handleAddToCart(product);
             }}
             className=" px-2"
           >
@@ -78,7 +49,7 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
             variant="outline"
             onClick={(e) => {
               e.preventDefault();
-              handleAddToFavorites(product.id);
+              handleAddToFavorite(product);
             }}
             className=" px-2"
           >
