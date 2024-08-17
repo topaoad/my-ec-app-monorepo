@@ -351,6 +351,25 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@conform-to/dom@1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@conform-to/dom/-/dom-1.1.5.tgz#4b4219d3094e50411110231d1f467d9ca1a96b66"
+  integrity sha512-tWI3YxWvDaZFSl4QN8Y0WbgBxsWEfcTrSMtKic3YTt/hGVJXjQ8qURBdsJXudzJ38zwAr5GhpLWmyI6BbG9+gA==
+
+"@conform-to/react@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@conform-to/react/-/react-1.1.5.tgz#8fd78cd2ae913d78ed5cff6d1315451327d89db3"
+  integrity sha512-QyzJ8SIazHmez7qkMffypICDBwU+Ht5TPe+C4MTP2dro0N0Hu6LsfLq7mMWFJyAJ7IYxT1BMzfoFj28jheIIOw==
+  dependencies:
+    "@conform-to/dom" "1.1.5"
+
+"@conform-to/zod@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@conform-to/zod/-/zod-1.1.5.tgz#b50bf80150bebdf817d0d4aba6806a856e746b0e"
+  integrity sha512-ho/742wgfTWf2u5tKo4GT88xcKcvTOCDPOi4o1WEmePPmJNP5ezeMQSKSdKdS0rFinZl9ZTH8gV5FQUNPHAA7A==
+  dependencies:
+    "@conform-to/dom" "1.1.5"
+
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz#00629c35a688e05a88b1cda684fb9d5e73f000a1"

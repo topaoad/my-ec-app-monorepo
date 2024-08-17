@@ -1,30 +1,13 @@
 import { stripe } from "@/app/libs/stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "microcms-js-sdk";
-import { CartItem } from "@/store/cartAtom";
 
 const client = createClient({
   serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN!,
   apiKey: process.env.MICROCMS_API_KEY!,
 });
 
-async function checkAndReserveStock(item: CartItem) {
-  const product = await client.get({ endpoint: "products", contentId: item.id });
-  if (product.inventory < item.quantity) {
-    throw new Error(`商品:${item.title}は注文数が在庫を超えております `);
-  }
-  await client.update({
-    endpoint: "products",
-    contentId: item.id,
-    content: {
-      inventory: item.inventory - item.quantity,
-    },
-  });
-  return true;
-}
-
-
-export async function PUT(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin") || "http://localhost:3000";
   const referer = request.headers.get("referer") || "http://localhost:3000";
 
@@ -35,11 +18,6 @@ export async function PUT(request: NextRequest) {
   const { cart, email } = await request.json();
 
   try {
-    // 在庫確認と予約
-    for (const item of cart) {
-      await checkAndReserveStock(item);
-    }
-
     // Stripeセッションの作成
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -62,6 +40,34 @@ export async function PUT(request: NextRequest) {
     });
 
     if (session.url) {
+      // 決済成功後の処理（在庫減少とmicroCMSへの情報送信）
+      console.log("Session created:", session.id);
+      console.log("決済成功！", cart);
+      if (session.payment_status === "paid") {
+        for (const item of cart) {
+          // microCMSの在庫を減少
+          await client.update({
+            endpoint: "products",
+            contentId: item.id,
+            content: {
+              inventory: item.inventory - item.quantity,
+            },
+          });
+
+          // 決済情報をmicroCMSに送信（例：purchases エンドポイントがあると仮定）
+          // await client.create({
+          //   endpoint: "purchases",
+          //   content: {
+          //     productId: item.id,
+          //     quantity: item.quantity,
+          //     amount: item.price * item.quantity,
+          //     purchaseDate: new Date().toISOString(),
+          //     customerEmail: email,
+          //   },
+          // });
+        }
+      }
+
       return NextResponse.json({ sessionId: session.id, url: session.url });
     } else {
       throw new Error("Failed to create a new checkout session.");
@@ -69,7 +75,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error("Checkout error:", error);
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "An error occurred during checkout." },
+      { message: "An error occurred during checkout." },
       { status: 500 }
     );
   }

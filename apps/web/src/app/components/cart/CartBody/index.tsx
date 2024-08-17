@@ -7,8 +7,9 @@ import { Product } from "@/app/libs/microcms";
 import { MicroCMSListResponse } from "microcms-js-sdk";
 import { cartAtom, updateCartQuantityAtom, removeFromCartAtom, CartItem } from "@/store/cartAtom";
 import { useAtom, useAtomValue } from "jotai";
-import { CheckoutModal } from "../../Modal/CheckoutModal";
-
+import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 interface CartBodyProps {
   products: MicroCMSListResponse<Product>["contents"];
 }
@@ -19,6 +20,8 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   const [, updateCartQuantity] = useAtom(updateCartQuantityAtom);
   const [, removeFromCart] = useAtom(removeFromCartAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -46,6 +49,9 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   };
 
   const handleCheckout = () => {
+    if (!session && status !== "loading") {
+      router.push("/signin");
+    }
     setIsModalOpen(true);
   };
 
@@ -85,12 +91,13 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
             <Button variant="custom" size="lg" className="mt-4" onClick={handleCheckout}>
               購入する
             </Button>
-            <CheckoutModal
+            <CheckoutModalV2
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               cart={cartItems}
               products={products}
               totalAmount={totalAmount}
+              email={session?.user?.email ?? ""}
             />
           </div>
           {/* <input type="hidden" name="amount" value={product.price} />
