@@ -35,6 +35,36 @@ export async function PUT(request: NextRequest) {
   const { cart, email } = await request.json();
 
   try {
+    // カート情報を最小限に絞る
+    const minimalCart = cart.map((item: { id: string; quantity: string; }) => ({
+      id: item.id,
+      quantity: item.quantity,
+    }));
+    // カート情報をJSONに変換
+    const cartJson = JSON.stringify(minimalCart);
+    // Webhookのためのmetadataオブジェクトを初期化
+    const metadata: Record<string, string> = {};
+    // 文字列を指定された長さで分割する補助関数
+    const chunkString = (str: string, length: number): string[] => {
+      const chunks = [];
+      let i = 0;
+      while (i < str.length) {
+        chunks.push(str.slice(i, i + length));
+        i += length;
+      }
+      return chunks;
+    };
+
+    // カートJSONが500文字を超える場合は分割する
+    if (cartJson.length <= 500) {
+      metadata.cart = cartJson;
+    } else {
+      const chunks = chunkString(cartJson, 500);
+      chunks.forEach((chunk, index) => {
+        metadata[`cart_${index}`] = chunk;
+      });
+    }
+
     // 在庫確認と予約
     for (const item of cart) {
       await checkAndReserveStock(item);
@@ -59,6 +89,7 @@ export async function PUT(request: NextRequest) {
       success_url: `${origin}?success=true?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: referer,
       customer_email: email,
+      metadata: metadata,
     });
 
     if (session.url) {
