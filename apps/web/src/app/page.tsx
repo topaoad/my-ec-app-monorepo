@@ -11,6 +11,7 @@ import { NextResponse } from "next/server";
 import { Products } from "./products/components/Products";
 import { Productsdemo } from "./products/components/Productsdemo";
 import { redirect } from "next/navigation";
+import { SendMail } from "@/app/components/SendMail";
 
 export default async function Home() {
   // サーバーセッション
@@ -56,6 +57,8 @@ export default async function Home() {
   return (
     <>
       <Products />
+      {/* メール送信用コンポーネント コメントアウト*/}
+      {/* <SendMail /> */}
       {/* <Productsdemo /> */}
     </>
   );
