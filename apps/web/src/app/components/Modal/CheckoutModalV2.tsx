@@ -38,6 +38,23 @@ export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({ isOpen, onClose,
         throw new Error(errorData.message || "決済処理に失敗しました。");
       }
 
+      // 決済完了メールの送信
+      const emailResponse = await fetch("/api/checkout-complete-mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          cart,
+          totalAmount,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        console.error("決済完了メールの送信に失敗しました。");
+      }
+
       const { url } = await response.json();
       window.location.href = url;
     } catch (err) {
@@ -45,6 +62,8 @@ export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({ isOpen, onClose,
     } finally {
       setIsProcessing(false);
     }
+
+
   };
 
   return (
