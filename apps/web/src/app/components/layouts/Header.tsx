@@ -32,6 +32,10 @@ const Header: React.FC = () => {
     setIsDrawerOpen(false);
   };
 
+  const handleLinkClick = () => {
+    setIsAccountDropdownOpen(false);
+  };
+
   const renderNavItems = () => (
     <>
       {navItems.map((item) => (
@@ -68,7 +72,7 @@ const Header: React.FC = () => {
             <ChevronDown className="w-4 h-4 ml-1 md:hidden" />
           </button>
           <div className={`absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 ${isAccountDropdownOpen ? "block" : "hidden"} `}>
-            <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <Link href="/profile" onClick={handleLinkClick} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
               プロフィール設定
             </Link>
             <button
