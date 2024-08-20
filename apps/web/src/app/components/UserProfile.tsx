@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useAtom } from "jotai";
 import { userAtom } from "@/store/userAtom";

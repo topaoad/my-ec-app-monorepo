@@ -1,4 +1,3 @@
-import { PrismaClient, Prisma, User } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getUsers } from "@/app/libs/crud/getUsers";
 import { prisma } from "@/app/libs/prisma";

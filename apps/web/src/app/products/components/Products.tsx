@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { listProducts } from "@/app/libs/microcms";
-import { Suspense } from "react";
 import { Pagination } from "@/app/components/layouts/Pagenation";
 import Image from "next/image";
 import { cva } from "class-variance-authority";

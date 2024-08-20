@@ -2,7 +2,7 @@
 
 // We can not useState or useRef in a server component, which is why we are
 // extracting this part out into it's own file with 'use client' on top
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 

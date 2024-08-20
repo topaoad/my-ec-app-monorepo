@@ -1,6 +1,6 @@
 "use client";
 
-import { createTheme, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { ReactNode } from "react";
 
 // const theme = createTheme({

@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Product, listProducts } from "@/app/libs/microcms";
+import React from "react";
+import { Product } from "@/app/libs/microcms";
 import FavoritesBody from "../components/favorites/FavoritesBody";
 import { getFavoriteProducts } from "../libs/actions/favorites";
 import { getServerSession } from "next-auth/next";

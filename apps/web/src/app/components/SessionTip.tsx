@@ -1,8 +1,7 @@
 "use client";
 
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import type { Session } from "next-auth";
-import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 
 export default function SessionTip({ session }: { session: Session | null }) {

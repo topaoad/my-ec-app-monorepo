@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React from "react";
 import { listProducts } from "@/app/libs/microcms";
 import CartBody from "../components/cart/CartBody";
 

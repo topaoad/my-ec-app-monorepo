@@ -1,12 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
 
-import Link from "next/link";
-import { Suspense } from "react";
 // import { Pagination } from './layouts/Pagenation'
-import Image from "next/image";
-import { MicroCMSImage, MicroCMSQueries, createClient } from "microcms-js-sdk";
-import useSWR, { Fetcher } from "swr";
+import { MicroCMSImage, createClient } from "microcms-js-sdk";
+import useSWR from "swr";
 
 // クライアント側でuseSWRを使用してデータを取得
 export function Productsdemo({ offset }: { offset?: number }) {

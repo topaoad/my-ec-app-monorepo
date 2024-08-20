@@ -3,10 +3,8 @@
 import React, { useState, useEffect, FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Product, listProducts } from "@/app/libs/microcms";
+import { Product } from "@/app/libs/microcms";
 import {
-  MicroCMSContentId,
-  MicroCMSDate,
   MicroCMSListResponse,
 } from "microcms-js-sdk";
 import Link from "next/link";

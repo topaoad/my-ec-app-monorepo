@@ -1,6 +1,6 @@
 "use client";
 
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Product } from "../libs/microcms";
 import router from "next/router";
 import { addToFavorites } from "../libs/actions/favorites";

@@ -1,22 +1,15 @@
 "use client";
 
-import React, { FC, ReactNode } from "react";
-import { cn } from "@repo/utils/twMerge";
-import { cva } from "class-variance-authority";
+import React, { FC } from "react";
 import { Button } from "@mantine/core";
-import { ShoppingCart, Heart, Check, AlertCircle } from "lucide-react";
+import { ShoppingCart, Heart } from "lucide-react";
 import {
-  Card,
-  CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Product } from "@/app/libs/microcms";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { addToFavorites } from "@/app/libs/actions/favorites";
 import { useAddToCart } from "@/app/hooks/useAddToCart";
 import { useAddToFavorite } from "@/app/hooks/useAddToFavorite";
 

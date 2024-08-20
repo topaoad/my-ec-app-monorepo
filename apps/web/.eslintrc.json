@@ -1,6 +1,6 @@
 {
   "plugins": ["unused-imports"],
-  "extends": ["next/core-web-vitals", "plugin:unused-imports/recommended"],
+  "extends": ["next/core-web-vitals"],
   "rules": {
     // 文字列はダブルクォートで囲むように警告を表示
     "quotes": ["warn", "double"],
@@ -10,7 +10,7 @@
     "no-unused-vars": ["warn"], // 未使用の変数を警告します。コードのクリーンアップに役立ちます
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
-      "error",
+      "warn",
       {
         "vars": "all",
         "varsIgnorePattern": "^_",

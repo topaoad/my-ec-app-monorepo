@@ -1,17 +1,9 @@
-import Image from "next/image";
 // import { useSession, signIn, signOut } from "next-auth/react"
 import { getServerSession } from "next-auth/next";
 // import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 // import SessionTip from '@/app/components/SessionTip'
-import { useSession, signIn, signOut } from "next-auth/react";
 import { authOptions } from "@/app/libs/auth";
-import SessionTip from "./components/SessionTip";
-import UserProfile from "./components/UserProfile";
-import { NextResponse } from "next/server";
 import { Products } from "./products/components/Products";
-import { Productsdemo } from "./products/components/Productsdemo";
-import { redirect } from "next/navigation";
-import { SendMail } from "@/app/components/SendMail";
 
 export default async function Home() {
   // サーバーセッション
