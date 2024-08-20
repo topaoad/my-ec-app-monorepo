@@ -3,9 +3,7 @@
 import React, { FC } from "react";
 import { Button } from "@mantine/core";
 import { ShoppingCart, Heart } from "lucide-react";
-import {
-  CardFooter,
-} from "@/components/ui/card";
+import { CardFooter } from "@/components/ui/card";
 import { Product } from "@/app/libs/microcms";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";

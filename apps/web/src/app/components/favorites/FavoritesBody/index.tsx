@@ -4,9 +4,7 @@ import React, { useState, useEffect, FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/app/libs/microcms";
-import {
-  MicroCMSListResponse,
-} from "microcms-js-sdk";
+import { MicroCMSListResponse } from "microcms-js-sdk";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "@/components/ui/use-toast";
