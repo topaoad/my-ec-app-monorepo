@@ -16,7 +16,7 @@ const FavoriteInput = z.object({
 
 export async function addToFavorites(input: z.infer<typeof FavoriteInput>) {
   try {
-    const session = await getServerSession(authOptions) as Session;
+    const session = (await getServerSession(authOptions)) as Session;
     if (!session || !session.user) {
       throw new Error("認証が必要です");
     }
@@ -32,7 +32,10 @@ export async function addToFavorites(input: z.infer<typeof FavoriteInput>) {
     revalidatePath("/favorites");
     return { success: true, favorite };
   } catch (error) {
-    if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
       // 既に登録がある＝ユニーク制約違反の場合
       return { success: false, error: "ALREADY_FAVORITED" };
     }
@@ -42,13 +45,15 @@ export async function addToFavorites(input: z.infer<typeof FavoriteInput>) {
   }
 }
 
-export async function getFavoriteProducts(userId: string): Promise<MicroCMSListResponse<Product>["contents"]> {
+export async function getFavoriteProducts(
+  userId: string,
+): Promise<MicroCMSListResponse<Product>["contents"]> {
   try {
     const favorites = await prisma.favorite.findMany({
       where: { userId },
     });
 
-    const productIds = favorites.map(favorite => favorite.productId);
+    const productIds = favorites.map((favorite) => favorite.productId);
     if (productIds.length === 0) {
       return [];
     }
@@ -61,9 +66,11 @@ export async function getFavoriteProducts(userId: string): Promise<MicroCMSListR
   }
 }
 
-export async function removeFromFavorites(input: z.infer<typeof FavoriteInput>) {
+export async function removeFromFavorites(
+  input: z.infer<typeof FavoriteInput>,
+) {
   try {
-    const session = await getServerSession(authOptions) as Session;
+    const session = (await getServerSession(authOptions)) as Session;
     if (!session || !session.user) {
       throw new Error("認証が必要です");
     }
@@ -85,7 +92,10 @@ export async function removeFromFavorites(input: z.infer<typeof FavoriteInput>) 
 
     return { success: true };
   } catch (error) {
-    if (error instanceof PrismaClientKnownRequestError && error.code === "P2025") {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
       // レコードが見つからない場合
       return { success: false, error: "NOT_FAVORITED" };
     }

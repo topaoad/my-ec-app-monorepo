@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     console.error("Checkout error:", error);
     return NextResponse.json(
       { message: "An error occurred during checkout." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

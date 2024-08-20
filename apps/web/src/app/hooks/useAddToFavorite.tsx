@@ -22,7 +22,6 @@ export const useAddToFavorite = () => {
       return;
     }
 
-
     try {
       const result = await addToFavorites({ productId: product.id });
 
@@ -30,12 +29,10 @@ export const useAddToFavorite = () => {
         toast({
           title: "お気に入りに追加しました",
           description: (
-            < div className="flex items-center" >
+            <div className="flex items-center">
               <Check className="w-4 h-4 mr-2 text-green-500" />
-              <span>
-                {product.title} をお気に入りに追加しました
-              </span>
-            </div >
+              <span>{product.title} をお気に入りに追加しました</span>
+            </div>
           ),
           duration: 2000,
         });
@@ -43,12 +40,10 @@ export const useAddToFavorite = () => {
         toast({
           title: "お気に入りに追加済みです",
           description: (
-            < div className="flex items-center" >
+            <div className="flex items-center">
               <AlertCircle className="w-4 h-4 mr-2 text-yellow-500" />
-              <span>
-                この商品はすでにお気に入りに登録済みです
-              </span>
-            </div >
+              <span>この商品はすでにお気に入りに登録済みです</span>
+            </div>
           ),
           duration: 2000,
         });

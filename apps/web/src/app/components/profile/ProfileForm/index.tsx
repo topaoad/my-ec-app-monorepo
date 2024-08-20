@@ -30,7 +30,10 @@ export default function ProfileForm({ user }: ProfileFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="nickname"
+          className="block text-sm font-medium text-gray-700"
+        >
           ユーザー名
         </label>
         <input
@@ -42,7 +45,10 @@ export default function ProfileForm({ user }: ProfileFormProps) {
         />
       </div>
       <div>
-        <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="image"
+          className="block text-sm font-medium text-gray-700"
+        >
           プロフィール画像URL
         </label>
         <input

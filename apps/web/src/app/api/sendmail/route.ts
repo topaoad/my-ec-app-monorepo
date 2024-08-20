@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import MyEmail2 from "../../../../../../packages/transactional/emails/MyEmail2";  // パスは実際の場所に合わせて調整してください
+import MyEmail2 from "../../../../../../packages/transactional/emails/MyEmail2"; // パスは実際の場所に合わせて調整してください
 import { render } from "@react-email/render";
 import React from "react";
 
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const emailHtml = render(emailComponent);
 
     const data = await resend.emails.send({
-      from: "Your Name <sample@resend.dev>",  // Resendで検証済みのメールアドレスを使用
+      from: "Your Name <sample@resend.dev>", // Resendで検証済みのメールアドレスを使用
       to: recipientEmail,
       subject: "Welcome to Our Service",
       html: emailHtml,
@@ -22,6 +22,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to send email" },
+      { status: 500 },
+    );
   }
 }

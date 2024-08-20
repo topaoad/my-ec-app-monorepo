@@ -23,7 +23,10 @@ export async function POST(request: NextRequest) {
     // MicroCMSから商品情報を取得して存在確認
     const product = await getProduct(productId);
     if (!product) {
-      return NextResponse.json({ error: "指定された商品が見つかりません" }, { status: 404 });
+      return NextResponse.json(
+        { error: "指定された商品が見つかりません" },
+        { status: 404 },
+      );
     }
 
     const favorite = await prisma.favorite.create({
@@ -36,9 +39,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, favorite });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "無効な入力データです" }, { status: 400 });
+      return NextResponse.json(
+        { error: "無効な入力データです" },
+        { status: 400 },
+      );
     }
     console.error("お気に入りの追加に失敗しました", error);
-    return NextResponse.json({ error: "お気に入りの追加に失敗しました" }, { status: 500 });
+    return NextResponse.json(
+      { error: "お気に入りの追加に失敗しました" },
+      { status: 500 },
+    );
   }
 }

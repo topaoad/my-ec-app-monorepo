@@ -5,7 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/app/libs/microcms";
 import { MicroCMSListResponse } from "microcms-js-sdk";
-import { cartAtom, updateCartQuantityAtom, removeFromCartAtom, CartItem } from "@/store/cartAtom";
+import {
+  cartAtom,
+  updateCartQuantityAtom,
+  removeFromCartAtom,
+  CartItem,
+} from "@/store/cartAtom";
 import { useAtom, useAtomValue } from "jotai";
 import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
 import { useSession } from "next-auth/react";
@@ -28,16 +33,21 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   }, []);
 
   const cartItems: CartItem[] = useMemo(() => {
-    if (!isClient) { return []; }
-    return cart.map(item => {
-      const product = products.find(p => p.id === item.id);
-      return product ? { ...product, quantity: item.quantity } : null;
-    }).filter((item): item is CartItem => item !== null);
+    if (!isClient) {
+      return [];
+    }
+    return cart
+      .map((item) => {
+        const product = products.find((p) => p.id === item.id);
+        return product ? { ...product, quantity: item.quantity } : null;
+      })
+      .filter((item): item is CartItem => item !== null);
   }, [cart, products, isClient]);
 
-  const totalAmount = useMemo(() =>
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
-    [cartItems]
+  const totalAmount = useMemo(
+    () =>
+      cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
+    [cartItems],
   );
 
   const handleQuantityChange = (id: string, quantity: number) => {
@@ -61,13 +71,15 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
 
   return (
     <div className="container mx-auto px-4 max-w-7xl">
-      <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">買い物カート</h1>
+      <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">
+        買い物カート
+      </h1>
       {cartItems.length === 0 ? (
         <p className="text-center">カートは空です。</p>
       ) : (
         // <form action={`/api/${productId}/checkout`} method="POST">
         <div className="space-y-4">
-          {cartItems.map(item => (
+          {cartItems.map((item) => (
             <Card key={item.id}>
               <CardHeader>
                 <CardTitle>{item.title}</CardTitle>
@@ -75,10 +87,27 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
               <CardContent>
                 <p>価格: {item.price.toLocaleString()}円</p>
                 <div className="flex items-center mt-2">
-                  <Button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>-</Button>
+                  <Button
+                    onClick={() =>
+                      handleQuantityChange(item.id, item.quantity - 1)
+                    }
+                  >
+                    -
+                  </Button>
                   <span className="mx-2">{item.quantity}</span>
-                  <Button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</Button>
-                  <Button className="ml-4" onClick={() => handleRemoveFromCart(item.id)}>削除</Button>
+                  <Button
+                    onClick={() =>
+                      handleQuantityChange(item.id, item.quantity + 1)
+                    }
+                  >
+                    +
+                  </Button>
+                  <Button
+                    className="ml-4"
+                    onClick={() => handleRemoveFromCart(item.id)}
+                  >
+                    削除
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -88,7 +117,12 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
             <p className="text-xl font-bold">
               合計: {totalAmount.toLocaleString()}円
             </p>
-            <Button variant="custom" size="lg" className="mt-4" onClick={handleCheckout}>
+            <Button
+              variant="custom"
+              size="lg"
+              className="mt-4"
+              onClick={handleCheckout}
+            >
               購入する
             </Button>
             <CheckoutModalV2

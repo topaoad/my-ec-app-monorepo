@@ -12,7 +12,7 @@ declare module "next-auth" {
       id: string;
       isNewUser: boolean;
       lastLogin?: Date | null;
-    } & DefaultSession["user"]
+    } & DefaultSession["user"];
   }
 }
 

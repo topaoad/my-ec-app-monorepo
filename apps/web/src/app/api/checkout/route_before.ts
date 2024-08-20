@@ -96,7 +96,7 @@ export async function POST(
     priceId =
       typeof product.default_price === "string"
         ? product.default_price
-        : product.default_price?.id ?? "";
+        : (product.default_price?.id ?? "");
   }
 
   // 以下はStripe.jsやElementsを使用してクライアントサイドでカスタムした支払いを確認するために使用されます。

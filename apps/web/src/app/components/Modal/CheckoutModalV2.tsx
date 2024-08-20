@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CartItem } from "@/store/cartAtom";
 import { Product } from "@/app/libs/microcms";
@@ -13,7 +19,14 @@ interface CheckoutModalProps {
   totalAmount: number;
   email: string;
 }
-export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({ isOpen, onClose, cart, products, totalAmount, email }) => {
+export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({
+  isOpen,
+  onClose,
+  cart,
+  products,
+  totalAmount,
+  email,
+}) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,12 +71,14 @@ export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({ isOpen, onClose,
       const { url } = await response.json();
       window.location.href = url;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "決済処理中にエラーが発生しました。");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "決済処理中にエラーが発生しました。",
+      );
     } finally {
       setIsProcessing(false);
     }
-
-
   };
 
   return (
@@ -94,11 +109,11 @@ export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({ isOpen, onClose,
             readOnly
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
           />
-          {error && (
-            <p className="mt-4 text-sm text-red-600">{error}</p>
-          )}
+          {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
           <DialogFooter className="mt-6">
-            <Button type="button" onClick={onClose} disabled={isProcessing}>キャンセル</Button>
+            <Button type="button" onClick={onClose} disabled={isProcessing}>
+              キャンセル
+            </Button>
             <Button type="submit" disabled={isProcessing}>
               {isProcessing ? "処理中..." : "決済に進む"}
             </Button>

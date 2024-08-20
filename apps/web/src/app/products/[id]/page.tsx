@@ -72,7 +72,8 @@ export default async function Product({
             {product.price.toLocaleString()}円
           </p>
           <p className="mb-4">
-            在庫状況: {product.inventory > 0 ? `残り${product.inventory}点` : '在庫切れ'}
+            在庫状況:{" "}
+            {product.inventory > 0 ? `残り${product.inventory}点` : "在庫切れ"}
           </p>
           {/* <button
             onClick={handleAddToCart}

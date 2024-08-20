@@ -4,7 +4,16 @@ import { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Home, ShoppingCart, Heart, Clock, User, ChevronDown, Menu, X } from "lucide-react";
+import {
+  Home,
+  ShoppingCart,
+  Heart,
+  Clock,
+  User,
+  ChevronDown,
+  Menu,
+  X,
+} from "lucide-react";
 import { Logo } from "@/app/components/icons/Logo";
 import { cartAtom } from "@/store/cartAtom";
 import { useAtomValue } from "jotai";
@@ -68,11 +77,19 @@ const Header: React.FC = () => {
             className="flex items-center text-gray-600 hover:text-purple-600 md:flex-col md:items-center"
           >
             <User className="w-6 h-6" />
-            <span className="text-sm md:text-xs md:mt-1 ml-2 md:ml-0">アカウント情報</span>
+            <span className="text-sm md:text-xs md:mt-1 ml-2 md:ml-0">
+              アカウント情報
+            </span>
             <ChevronDown className="w-4 h-4 ml-1 md:hidden" />
           </button>
-          <div className={`absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 ${isAccountDropdownOpen ? "block" : "hidden"} `}>
-            <Link href="/profile" onClick={handleLinkClick} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+          <div
+            className={`absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 ${isAccountDropdownOpen ? "block" : "hidden"} `}
+          >
+            <Link
+              href="/profile"
+              onClick={handleLinkClick}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
               プロフィール設定
             </Link>
             <button
@@ -97,20 +114,28 @@ const Header: React.FC = () => {
           <nav className="hidden md:flex items-center space-x-4">
             {renderNavItems()}
           </nav>
-          <button onClick={() => setIsDrawerOpen(!isDrawerOpen)} className="md:hidden text-gray-600">
+          <button
+            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+            className="md:hidden text-gray-600"
+          >
             {isDrawerOpen ? "" : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
-      <div className={`fixed inset-0 bg-gray-600 bg-opacity-50 z-40 md:hidden transition-opacity duration-300 ${isDrawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-        <div className={`fixed right-0 top-0 bottom-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${isDrawerOpen ? "translate-x-0" : "translate-x-full"}`}>
+      <div
+        className={`fixed inset-0 bg-gray-600 bg-opacity-50 z-40 md:hidden transition-opacity duration-300 ${isDrawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      >
+        <div
+          className={`fixed right-0 top-0 bottom-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${isDrawerOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
           <div className="p-4">
-            <button onClick={() => setIsDrawerOpen(false)} className="mb-4 text-gray-600">
+            <button
+              onClick={() => setIsDrawerOpen(false)}
+              className="mb-4 text-gray-600"
+            >
               <X className="w-6 h-6" />
             </button>
-            <nav className="flex flex-col space-y-4">
-              {renderNavItems()}
-            </nav>
+            <nav className="flex flex-col space-y-4">{renderNavItems()}</nav>
           </div>
         </div>
       </div>

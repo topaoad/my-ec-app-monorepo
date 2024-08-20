@@ -9,7 +9,10 @@ const client = createClient({
 });
 
 async function checkAndReserveStock(item: CartItem) {
-  const product = await client.get({ endpoint: "products", contentId: item.id });
+  const product = await client.get({
+    endpoint: "products",
+    contentId: item.id,
+  });
   if (product.inventory < item.quantity) {
     throw new Error(`商品:${item.title}は注文数が在庫を超えております `);
   }
@@ -23,7 +26,6 @@ async function checkAndReserveStock(item: CartItem) {
   return true;
 }
 
-
 export async function PUT(request: NextRequest) {
   const origin = request.headers.get("origin") || "http://localhost:3000";
   const referer = request.headers.get("referer") || "http://localhost:3000";
@@ -36,7 +38,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     // カート情報を最小限に絞る
-    const minimalCart = cart.map((item: { id: string; quantity: string; }) => ({
+    const minimalCart = cart.map((item: { id: string; quantity: string }) => ({
       id: item.id,
       quantity: item.quantity,
     }));
@@ -100,8 +102,13 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error("Checkout error:", error);
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "An error occurred during checkout." },
-      { status: 500 }
+      {
+        message:
+          error instanceof Error
+            ? error.message
+            : "An error occurred during checkout.",
+      },
+      { status: 500 },
     );
   }
 }

@@ -1,5 +1,11 @@
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CartItem } from "@/store/cartAtom";
 import { Product } from "@/app/libs/microcms";
@@ -16,7 +22,13 @@ interface CheckoutModalProps {
   totalAmount: number;
 }
 
-export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, cart, products, totalAmount }) => {
+export const CheckoutModal: React.FC<CheckoutModalProps> = ({
+  isOpen,
+  onClose,
+  cart,
+  products,
+  totalAmount,
+}) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

@@ -5,7 +5,13 @@ import { cn } from "@repo/utils/twMerge";
 import { cva } from "class-variance-authority";
 import { Button } from "@mantine/core";
 import { ShoppingCart, Heart, Check, AlertCircle } from "lucide-react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Product } from "@/app/libs/microcms";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
@@ -14,14 +20,11 @@ import { addToFavorites } from "@/app/libs/actions/favorites";
 import { useAddToCart } from "@/app/hooks/useAddToCart";
 import { useAddToFavorite } from "@/app/hooks/useAddToFavorite";
 
-
 interface CardFooterAreaProps {
   product: Product;
 }
 
-const CardFooterArea: FC<CardFooterAreaProps> = ({
-  product,
-}) => {
+const CardFooterArea: FC<CardFooterAreaProps> = ({ product }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const { toast } = useToast();
@@ -41,9 +44,7 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
             className=" px-2"
           >
             <ShoppingCart className=" h-4 w-4" />
-            <span className="ml-1">
-              カートに追加
-            </span>
+            <span className="ml-1">カートに追加</span>
           </Button>
           <Button
             variant="outline"
@@ -54,9 +55,7 @@ const CardFooterArea: FC<CardFooterAreaProps> = ({
             className=" px-2"
           >
             <Heart className=" h-4 w-4" />
-            <span className="ml-1">
-              お気に入り
-            </span>
+            <span className="ml-1">お気に入り</span>
           </Button>
         </div>
       </CardFooter>

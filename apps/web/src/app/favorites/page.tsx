@@ -10,7 +10,7 @@ import { MicroCMSListResponse } from "microcms-js-sdk";
 import { Session } from "@/types/session";
 
 const FavoritesPage = async () => {
-  const session = await getServerSession(authOptions) as Session;
+  const session = (await getServerSession(authOptions)) as Session;
 
   let favoriteProducts: MicroCMSListResponse<Product>["contents"] = [];
   if (session && session.user && session.user.id) {

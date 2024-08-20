@@ -1,0 +1,8 @@
+{
+  "editor.codeActionsOnSave": {
+    //　source.organizeImportsはimportを自動でソートし、未使用のimportを削除する
+    "source.organizeImports": "explicit",
+    "source.addMissingImports": "explicit",
+    "source.fixAll": "explicit"
+  }
+}

@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { listProducts } from "@/app/libs/microcms";
 import { Suspense } from "react";
@@ -31,12 +30,18 @@ export async function Products({ offset }: { offset?: number }) {
   const { totalCount, limit } = args;
   return (
     // <Suspense fallback={<div>Loading中・・・</div>}>
-    <div className="" >
-      <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">商品一覧</h1>
+    <div className="">
+      <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">
+        商品一覧
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {products.map((product) => (
           <Card key={product.id} className="flex flex-col h-full">
-            <Link className="flex flex-col h-full" href={`/products/${product.id}`} key={product.id} >
+            <Link
+              className="flex flex-col h-full"
+              href={`/products/${product.id}`}
+              key={product.id}
+            >
               <CardHeader className="p-0">
                 {product.image && (
                   <div className="relative w-full h-48">
@@ -51,7 +56,9 @@ export async function Products({ offset }: { offset?: number }) {
               </CardHeader>
               <CardContent className="flex-grow p-4">
                 <CardTitle className="text-xl mb-2">{product.title}</CardTitle>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{product.description}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                  {product.description}
+                </p>
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-purple-700 dark:text-purple-300">
                     価格:{product.price.toLocaleString()} 円
@@ -62,8 +69,6 @@ export async function Products({ offset }: { offset?: number }) {
             </Link>
             <CardFooterArea product={product} />
           </Card>
-
-
         ))}
       </div>
       <div className="flex justify-center items-center my-8">

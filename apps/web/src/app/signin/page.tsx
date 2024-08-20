@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/libs/auth";
 import SessionTip from "@/app/components/SessionTip";
 
-
 export default async function Home() {
   // サーバーセッション
   const session = await getServerSession(authOptions);

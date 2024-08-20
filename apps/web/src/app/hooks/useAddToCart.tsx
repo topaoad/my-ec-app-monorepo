@@ -12,14 +12,16 @@ export const useAddToCart = () => {
   const [, addToCart] = useAtom(addToCartAtom);
 
   const handleAddToCart = (product: Product) => {
-    const isAlreadyInCart = cart.some(item => item.id === product.id);
+    const isAlreadyInCart = cart.some((item) => item.id === product.id);
 
     if (!isAlreadyInCart) {
       addToCart(product);
     }
 
     toast({
-      title: isAlreadyInCart ? "既にカートに追加済みです" : "カートに追加しました",
+      title: isAlreadyInCart
+        ? "既にカートに追加済みです"
+        : "カートに追加しました",
       description: (
         <div className="flex items-center">
           {isAlreadyInCart ? (

@@ -27,15 +27,12 @@ export const SendMail: React.FC = () => {
       if (response.ok) {
         toast({
           title: "メールを送信しました",
-          description:
-            (
-              < div className="flex items-center" >
-                <Check className="w-4 h-4 mr-2 text-green-500" />
-                <span>
-                  ユーザー名に向けてメールを送信しました
-                </span>
-              </div >
-            ),
+          description: (
+            <div className="flex items-center">
+              <Check className="w-4 h-4 mr-2 text-green-500" />
+              <span>ユーザー名に向けてメールを送信しました</span>
+            </div>
+          ),
           duration: 3000,
         });
       } else {
@@ -45,15 +42,12 @@ export const SendMail: React.FC = () => {
       console.error("Error sending email:", error);
       toast({
         title: "メールの送信に失敗しました",
-        description:
-          (
-            < div className="flex items-center" >
-              <AlertCircle className="w-4 h-4 mr-2 text-yellow-500" />
-              <span>
-                メールの送信に失敗しました。もう一度お試しください。
-              </span>
-            </div >
-          ),
+        description: (
+          <div className="flex items-center">
+            <AlertCircle className="w-4 h-4 mr-2 text-yellow-500" />
+            <span>メールの送信に失敗しました。もう一度お試しください。</span>
+          </div>
+        ),
         duration: 3000,
         variant: "destructive",
       });

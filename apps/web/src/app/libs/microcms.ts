@@ -42,7 +42,8 @@ export type Product = {
   price: number;
   inventory: number;
   day: string;
-} & MicroCMSContentId & MicroCMSDate;
+} & MicroCMSContentId &
+  MicroCMSDate;
 
 export const listProducts = async (queries: MicroCMSQueries = {}) => {
   const pageLimit = 4;
@@ -72,7 +73,10 @@ export const getProductById = async (
 
 export async function getProduct(productId: string): Promise<Product | null> {
   try {
-    const product = await client.get<Product>({ endpoint: "products", contentId: productId });
+    const product = await client.get<Product>({
+      endpoint: "products",
+      contentId: productId,
+    });
     return product;
   } catch (error) {
     console.error("Failed to fetch product:", error);
@@ -82,7 +86,9 @@ export async function getProduct(productId: string): Promise<Product | null> {
 
 export async function getProducts(): Promise<Product[]> {
   try {
-    const response = await client.get<{ contents: Product[] }>({ endpoint: "products" });
+    const response = await client.get<{ contents: Product[] }>({
+      endpoint: "products",
+    });
     return response.contents;
   } catch (error) {
     console.error("Failed to fetch products:", error);
@@ -90,15 +96,15 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
-
-
 export type SiteInfo = {
   site_title: string;
   description: string;
   feature_image?: MicroCMSImage;
 };
 
-export async function getProductsByIds(ids: string[]): Promise<MicroCMSListResponse<Product>["contents"]> {
+export async function getProductsByIds(
+  ids: string[],
+): Promise<MicroCMSListResponse<Product>["contents"]> {
   const response = await client.getList<Product>({
     endpoint: "products",
     queries: { ids: ids.join(",") },
