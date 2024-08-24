@@ -1,10 +1,33 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import type { Session } from "next-auth";
 import { ExternalLink } from "lucide-react";
+import type { Session } from "next-auth";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function SessionTip({ session }: { session: Session | null }) {
+  const router = useRouter();
+
+  const handleSignIn = async () => {
+    // setIsLoading(true);
+    try {
+      const callbackUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+      const result = await signIn("google", {
+        callbackUrl: callbackUrl,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        console.error("サインインエラー:", result.error);
+      } else if (result?.url) {
+        router.push(result.url);
+      }
+    } catch (error) {
+      console.error("サインイン中にエラーが発生しました:", error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
   if (!session) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -16,7 +39,7 @@ export default function SessionTip({ session }: { session: Session | null }) {
             サービスをご利用いただくには、ログインが必要です。
           </p>
           <button
-            onClick={() => signIn("google")}
+            onClick={handleSignIn}
             className="bg-purple-600 hover:bg-purple-700 text-white w-full flex items-center justify-center  font-semibold py-3 px-4  rounded-lg shadow transition duration-300 ease-in-out mb-4"
           >
             <ExternalLink className="w-5 h-5 mr-2" />

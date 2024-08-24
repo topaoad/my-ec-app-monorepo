@@ -1,9 +1,9 @@
-import GoogleProvider from "next-auth/providers/google";
-import LineProvider from "next-auth/providers/line";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
+import { randomBytes, randomUUID } from "crypto";
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import { randomUUID, randomBytes } from "crypto";
+import GoogleProvider from "next-auth/providers/google";
+import LineProvider from "next-auth/providers/line";
 
 const prisma = new PrismaClient();
 
@@ -47,7 +47,33 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async redirect({ url, baseUrl }: any) {
+    async redirect({ url, baseUrl }) {
+      // URLSearchParams を使用して callbackUrl を取得
+      const urlObj = new URL(url, baseUrl);
+      const callbackUrl = urlObj.searchParams.get("callbackUrl");
+
+      if (callbackUrl) {
+        // callbackUrl が対象パス
+        const allowedPaths = ["/cart", "/profile", "/orders", "/favorites"];
+        const isAllowedPath = allowedPaths.some((path) =>
+          callbackUrl.startsWith(path),
+        );
+
+        if (isAllowedPath) {
+          const fullCallbackUrl = `${baseUrl}${callbackUrl}`;
+          return fullCallbackUrl;
+        }
+      }
+
+      // その他の処理は変更なし
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+
       return baseUrl;
     },
     async signIn({ user, account, profile }: any) {

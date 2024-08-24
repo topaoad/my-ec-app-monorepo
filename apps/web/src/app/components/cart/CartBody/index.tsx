@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, FC, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Product } from "@/app/libs/microcms";
-import { MicroCMSListResponse } from "microcms-js-sdk";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   cartAtom,
-  updateCartQuantityAtom,
-  removeFromCartAtom,
   CartItem,
+  removeFromCartAtom,
+  updateCartQuantityAtom,
 } from "@/store/cartAtom";
 import { useAtom, useAtomValue } from "jotai";
-import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
+import { MicroCMSListResponse } from "microcms-js-sdk";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { FC, useEffect, useMemo, useState } from "react";
+import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
 interface CartBodyProps {
   products: MicroCMSListResponse<Product>["contents"];
 }
@@ -27,6 +27,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsClient(true);
@@ -60,7 +61,8 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
 
   const handleCheckout = () => {
     if (!session && status !== "loading") {
-      router.push("/signin");
+      const currentPath = pathname;
+      router.push(`/signin?callbackUrl=${encodeURIComponent(currentPath)}`);
     }
     setIsModalOpen(true);
   };
