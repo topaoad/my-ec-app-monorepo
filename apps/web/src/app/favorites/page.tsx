@@ -1,6 +1,6 @@
 import React from "react";
 import { Product } from "@/app/libs/microcms";
-import FavoritesBody from "../components/favorites/FavoritesBody";
+import FavoritesBody from "../../components/favorites/FavoritesBody";
 import { getFavoriteProducts } from "../libs/actions/favorites";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../libs/auth";
