@@ -22,8 +22,12 @@ export default withAuth(
     }
 
     // 未ログインユーザーが保護されたページにアクセスした場合、サインインページにリダイレクト
+    // ただし、リダイレクトの管理はhandleNavItemClickで制御
     if (!token && isProtectedPage) {
-      return NextResponse.redirect(new URL("/signin", req.url));
+      const signInUrl = new URL("/signin", req.url);
+      const callbackUrl = req.nextUrl.pathname + req.nextUrl.search;
+      signInUrl.searchParams.set("callbackUrl", callbackUrl);
+      return NextResponse.redirect(signInUrl);
     }
 
     // その他の場合は通常のアクセスを許可
