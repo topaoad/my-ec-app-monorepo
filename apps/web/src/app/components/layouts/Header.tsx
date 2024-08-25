@@ -1,22 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  Home,
-  ShoppingCart,
-  Heart,
-  Clock,
-  User,
-  ChevronDown,
-  Menu,
-  X,
-} from "lucide-react";
 import { Logo } from "@/app/components/icons/Logo";
 import { cartAtom } from "@/store/cartAtom";
 import { useAtomValue } from "jotai";
+import {
+  ChevronDown,
+  Clock,
+  Heart,
+  Home,
+  Menu,
+  ShoppingCart,
+  User,
+  X,
+} from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Header: React.FC = () => {
   const { data: session, status } = useSession();
@@ -34,7 +34,8 @@ const Header: React.FC = () => {
 
   const handleNavItemClick = (href: string) => {
     if (!session && href !== "/" && href !== "/cart") {
-      router.push("/signin");
+      router.push(`/signin?callbackUrl=${encodeURIComponent(href)}`);
+      // router.push("/signin");
     } else {
       router.push(href);
     }

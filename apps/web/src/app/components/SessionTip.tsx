@@ -3,15 +3,16 @@
 import { ExternalLink } from "lucide-react";
 import type { Session } from "next-auth";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SessionTip({ session }: { session: Session | null }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleSignIn = async () => {
-    // setIsLoading(true);
     try {
-      const callbackUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+      const callbackUrl =
+        searchParams.get("callbackUrl") || window.location.pathname;
       const result = await signIn("google", {
         callbackUrl: callbackUrl,
         redirect: false,
@@ -24,8 +25,6 @@ export default function SessionTip({ session }: { session: Session | null }) {
       }
     } catch (error) {
       console.error("サインイン中にエラーが発生しました:", error);
-    } finally {
-      // setIsLoading(false);
     }
   };
   if (!session) {
