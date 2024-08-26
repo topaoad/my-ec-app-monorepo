@@ -1,6 +1,6 @@
 "use client";
 
-import { Logo } from "@/app/components/icons/Logo";
+import { Logo } from "@/components/icons/Logo";
 import { cartAtom } from "@/store/cartAtom";
 import { useAtomValue } from "jotai";
 import {

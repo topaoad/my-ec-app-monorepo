@@ -12,7 +12,7 @@ import {
 import { useAtom, useAtomValue } from "jotai";
 import { MicroCMSListResponse } from "microcms-js-sdk";
 import { useSession } from "next-auth/react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useMemo, useState } from "react";
 import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
 interface CartBodyProps {

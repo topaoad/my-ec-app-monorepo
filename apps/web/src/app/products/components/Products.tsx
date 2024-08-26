@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { listProducts } from "@/app/libs/microcms";
-import { Pagination } from "@/app/components/layouts/Pagenation";
-import Image from "next/image";
-import { cva } from "class-variance-authority";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import CardFooterArea from "@/components/Card/CardFooter";
+import { Pagination } from "@/components/layouts/Pagenation";
 import { Badge } from "@/components/ui/badge";
-import CardFooterArea from "@/app/components/Card/CardFooter";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cva } from "class-variance-authority";
+import Image from "next/image";
+import Link from "next/link";
 
 export const buttonVariants = cva("btn", {
   variants: {

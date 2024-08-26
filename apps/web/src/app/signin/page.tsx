@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/libs/auth";
-import SessionTip from "@/app/components/SessionTip";
+import SessionTip from "@/components/SessionTip";
+import { getServerSession } from "next-auth/next";
 
 export default async function Home() {
   // サーバーセッション

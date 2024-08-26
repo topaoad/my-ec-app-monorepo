@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import NextAuthProvider from "@/app/components/NextAuthProvider";
-import { Suspense } from "react";
-import JotaiProvider from "@/app/components/JotaiProvider";
-import TanStackProvider from "./components/TanStackProvider";
-import "@mantine/core/styles.css";
-import MantineProviderWrapper from "./components/MantineProvider";
-import Header from "@/app/components/layouts/Header";
+import JotaiProvider from "@/components/JotaiProvider";
+import Header from "@/components/layouts/Header";
+import NextAuthProvider from "@/components/NextAuthProvider";
 import { ToastProvider } from "@/components/ui/toast";
 import { Toaster } from "@/components/ui/toaster";
-import CustomContainer from "./components/CustomContainer";
+import "@mantine/core/styles.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Suspense } from "react";
+import CustomContainer from "../components/CustomContainer";
+import MantineProviderWrapper from "../components/MantineProvider";
+import TanStackProvider from "../components/TanStackProvider";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
