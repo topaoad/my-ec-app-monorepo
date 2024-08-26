@@ -5,3 +5,4 @@ package-lock.json
 package.json
 public/
 .github/
+apps/web/prisma/generated/zod/**/*.ts
