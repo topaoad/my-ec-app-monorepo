@@ -12,6 +12,8 @@ import {
 import { useAtom, useAtomValue } from "jotai";
 import { MicroCMSListResponse } from "microcms-js-sdk";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useMemo, useState } from "react";
 import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
@@ -81,40 +83,64 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
       ) : (
         // <form action={`/api/${productId}/checkout`} method="POST">
         <div className="space-y-4">
-          {cartItems.map((item) => (
-            <Card key={item.id}>
-              <CardHeader>
-                <CardTitle>{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>価格: {item.price.toLocaleString()}円</p>
-                <div className="flex items-center mt-2">
-                  <Button
-                    onClick={() =>
-                      handleQuantityChange(item.id, item.quantity - 1)
-                    }
+          <div className="h-[400px] overflow-y-auto space-y-3">
+            {cartItems.map((item) => (
+              <Card
+                key={item.id}
+                className="flex flex-col sm:flex-row overflow-hidden"
+              >
+                <div className="w-full sm:w-1/3 relative h-48 sm:h-auto">
+                  <Link
+                    className="flex flex-col h-full"
+                    href={`/products/${item.id}`}
+                    key={item.id}
                   >
-                    -
-                  </Button>
-                  <span className="mx-2">{item.quantity}</span>
-                  <Button
-                    onClick={() =>
-                      handleQuantityChange(item.id, item.quantity + 1)
-                    }
-                  >
-                    +
-                  </Button>
-                  <Button
-                    className="ml-4"
-                    onClick={() => handleRemoveFromCart(item.id)}
-                  >
-                    削除
-                  </Button>
+                    <CardHeader className="p-0">
+                      {item.image && (
+                        <div className="relative w-full h-48">
+                          <Image
+                            src={item.image.url}
+                            alt={`Product image of ${item.title}`}
+                            fill
+                            className="object-cover rounded-t-lg"
+                          />
+                        </div>
+                      )}
+                    </CardHeader>
+                  </Link>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-
+                <CardContent className="flex-1 p-4 sm:ml-5">
+                  <CardTitle>{item.title}</CardTitle>
+                  <p className="sm:mt-5">
+                    価格: {item.price.toLocaleString()}円
+                  </p>
+                  <div className="flex items-center mt-2 sm:mt-5">
+                    <Button
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity - 1)
+                      }
+                    >
+                      -
+                    </Button>
+                    <span className="mx-2">{item.quantity}</span>
+                    <Button
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity + 1)
+                      }
+                    >
+                      +
+                    </Button>
+                    <Button
+                      className="ml-4"
+                      onClick={() => handleRemoveFromCart(item.id)}
+                    >
+                      削除
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
           <div className="text-right">
             <p className="text-xl font-bold">
               合計: {totalAmount.toLocaleString()}円
