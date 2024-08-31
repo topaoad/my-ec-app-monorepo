@@ -1,7 +1,11 @@
+import { authOptions } from "@/app/libs/auth";
+import { prisma } from "@/app/libs/prisma";
 import { stripe } from "@/app/libs/stripe";
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "microcms-js-sdk";
 import { CartItem } from "@/store/cartAtom";
+import { Session } from "@/types/session";
+import { createClient } from "microcms-js-sdk";
+import { getServerSession } from "next-auth/next";
+import { NextRequest, NextResponse } from "next/server";
 
 const client = createClient({
   serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN!,
@@ -34,9 +38,26 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ message: "Invalid request" }, { status: 400 });
   }
 
-  const { cart, email } = await request.json();
+  const { cart } = await request.json();
 
   try {
+    const session = (await getServerSession(authOptions)) as Session;
+    if (!session || !session.user?.email) {
+      return NextResponse.json({ error: "認証が必要です。" }, { status: 401 });
+    }
+
+    // ユーザーの Stripe カスタマーIDを取得
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { stripeCustomerId: true },
+    });
+
+    if (!user || !user.stripeCustomerId) {
+      return NextResponse.json(
+        { error: "ユーザー情報が見つかりません。" },
+        { status: 404 },
+      );
+    }
     // カート情報を最小限に絞る
     const minimalCart = cart.map((item: { id: string; quantity: string }) => ({
       id: item.id,
@@ -73,7 +94,8 @@ export async function PUT(request: NextRequest) {
     }
 
     // Stripeセッションの作成
-    const session = await stripe.checkout.sessions.create({
+    const stripeSession = await stripe.checkout.sessions.create({
+      customer: user.stripeCustomerId,
       payment_method_types: ["card"],
       line_items: cart.map((item: any) => ({
         price_data: {
@@ -90,12 +112,14 @@ export async function PUT(request: NextRequest) {
       // success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       success_url: `${origin}?success=true?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: referer,
-      customer_email: email,
       metadata: metadata,
     });
 
-    if (session.url) {
-      return NextResponse.json({ sessionId: session.id, url: session.url });
+    if (stripeSession.url) {
+      return NextResponse.json({
+        sessionId: stripeSession.id,
+        url: stripeSession.url,
+      });
     } else {
       throw new Error("Failed to create a new checkout session.");
     }

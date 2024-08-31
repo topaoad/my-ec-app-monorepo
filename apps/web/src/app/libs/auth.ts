@@ -1,3 +1,4 @@
+import { stripe } from "@/app/libs/stripe";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import { randomBytes, randomUUID } from "crypto";
@@ -77,6 +78,47 @@ export const authOptions: NextAuthOptions = {
       return baseUrl;
     },
     async signIn({ user, account, profile }: any) {
+      if (account?.provider === "google") {
+        try {
+          let dbUser = await prisma.user.findUnique({
+            where: { email: user.email! },
+            select: { id: true, stripeCustomerId: true },
+          });
+
+          if (!dbUser) {
+            // 新規ユーザーの場合、Stripe顧客を作成
+            const stripeCustomer = await stripe.customers.create({
+              email: user.email!,
+              name: user.name || undefined,
+            });
+
+            // 新規ユーザーを作成し、Stripe顧客IDを保存
+            dbUser = await prisma.user.create({
+              data: {
+                email: user.email!,
+                name: user.name || null,
+                stripeCustomerId: stripeCustomer.id,
+              },
+            });
+          } else if (!dbUser.stripeCustomerId) {
+            // 既存ユーザーでStripe顧客IDがない場合、Stripe顧客を作成して更新
+            const stripeCustomer = await stripe.customers.create({
+              email: user.email!,
+              name: user.name || undefined,
+            });
+
+            await prisma.user.update({
+              where: { id: dbUser.id },
+              data: { stripeCustomerId: stripeCustomer.id },
+            });
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Error during sign in:", error);
+          return false;
+        }
+      }
       return true;
     },
   },

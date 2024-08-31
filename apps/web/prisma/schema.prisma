@@ -21,6 +21,7 @@ model User {
   emailVerified DateTime?
   image         String?
   lastLogin     DateTime?
+  stripeCustomerId String?
   accounts      Account[]
   sessions      Session[]
   purchases     Purchase[]
