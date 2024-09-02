@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const OrderScalarFieldEnumSchema = z.enum([
   "id",
+  "stripeSessionId",
   "userId",
-  "productId",
-  "quantity",
+  "totalAmount",
   "status",
   "createdAt",
   "updatedAt",
