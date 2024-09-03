@@ -29,9 +29,9 @@ export async function POST(req: NextRequest) {
 
     try {
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-      logToFile(`Webhook verifiedしたよ: ${event.type}`);
+      // logToFile(`Webhook verifiedしたよ: ${event.type}`);
     } catch (err: any) {
-      logToFile(`Webhook Error: ${err.message}`);
+      // logToFile(`Webhook Error: ${err.message}`);
       return NextResponse.json(
         { error: `Webhook Error: ${err.message}` },
         { status: 400 },
@@ -43,8 +43,13 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
     // 決済が完了したときのイベント
     case "checkout.session.completed":
-      logToFile("Processing checkout.session.completed event");
+      // logToFile("Processing checkout.session.completed event");
       await handleCheckoutSessionCompleted(session);
+
+      // logToFile(`session: ${JSON.stringify(session)}`);
+      // logToFile(`Sending email to: ${session.metadata?.email}`);
+      // logToFile(`Cart items: ${JSON.stringify(cartItems)}`);
+      // logToFile(`Total amount: ${session.amount_total}`);
       // Resendを使ってメールを送信
       const internalResponse = await fetch(
         `${process.env.BASE_URL}/api/checkout-complete-mail`,
@@ -62,30 +67,35 @@ export async function POST(req: NextRequest) {
         },
       );
 
+      // レスポンスの詳細を常にログに記録
+      const responseText = await internalResponse.text();
+      // logToFile(`Internal response status: ${internalResponse.status}`);
+      // logToFile(`Internal response body: ${responseText}`);
+
       if (!internalResponse.ok) {
-        logToFile(
-          `Failed to send checkout complete mail: ${await internalResponse.text()}`,
-        );
+        // logToFile(
+        //   `Failed to send checkout complete mail: ${await internalResponse.text()}`,
+        // );
       }
       break;
     case "charge.succeeded":
-      logToFile("Received charge.succeeded event");
+      // logToFile("Received charge.succeeded event");
       break;
     case "payment_intent.succeeded":
-      logToFile("Received payment_intent.succeeded event");
+      // logToFile("Received payment_intent.succeeded event");
       break;
     case "payment_intent.created":
-      logToFile("Received payment_intent.created event");
+      // logToFile("Received payment_intent.created event");
       break;
     default:
-      logToFile(`Unhandled event type: ${event.type}`);
+      // logToFile(`Unhandled event type: ${event.type}`);
     }
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    logToFile(
-      `Unexpected error: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    // logToFile(
+    //   `Unexpected error: ${error instanceof Error ? error.message : String(error)}`,
+    // );
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
@@ -96,11 +106,11 @@ export async function POST(req: NextRequest) {
 async function handleCheckoutSessionCompleted(
   session: Stripe.Checkout.Session,
 ) {
-  logToFile(`Processing session: ${session.id}`);
+  // logToFile(`Processing session: ${session.id}`);
   // console.log(session.metadata?.email)
   const cartItems = JSON.parse(session.metadata?.cart || "[]");
-  logToFile(`Cart items: ${JSON.stringify(cartItems)}`);
-  logToFile(`session: ${JSON.stringify(session)}`);
+  // logToFile(`Cart items: ${JSON.stringify(cartItems)}`);
+  // logToFile(`session: ${JSON.stringify(session)}`);
 
   try {
     // 重複確認のため、すでに登録されている注文を取得
@@ -109,7 +119,7 @@ async function handleCheckoutSessionCompleted(
     });
 
     if (existingOrder) {
-      logToFile(`Order already exists for session: ${session.id}`);
+      // logToFile(`Order already exists for session: ${session.id}`);
       return;
     }
 
@@ -131,7 +141,7 @@ async function handleCheckoutSessionCompleted(
         },
       },
     });
-    logToFile(`Order created: ${order.id}`);
+    // logToFile(`Order created: ${order.id}`);
 
     // microCMSの在庫を更新
     for (const item of cartItems) {
@@ -147,22 +157,16 @@ async function handleCheckoutSessionCompleted(
           reservedInventory: product.reservedInventory - item.quantity,
         },
       });
-      logToFile(`Updated inventory for product: ${item.id}`);
+      // logToFile(`Updated inventory for product: ${item.id}`);
     }
   } catch (error) {
     console.error("Error processing checkout session:", error);
-    logToFile(
-      `Error creating order: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    // logToFile(
+    //   `Error creating order: ${error instanceof Error ? error.message : String(error)}`,
+    // );
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      logToFile(`Prisma error code: ${error.code}`);
-      logToFile(`Prisma error message: ${error.message}`);
+      // logToFile(`Prisma error code: ${error.code}`);
+      // logToFile(`Prisma error message: ${error.message}`);
     }
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

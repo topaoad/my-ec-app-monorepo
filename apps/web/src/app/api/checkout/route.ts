@@ -61,10 +61,16 @@ export async function PUT(request: NextRequest) {
     }
     // カート情報を最小限に絞る
     const minimalCart = cart.map(
-      (item: { id: string; quantity: string; price: number }) => ({
+      (item: {
+        id: string;
+        quantity: string;
+        price: number;
+        title: string;
+      }) => ({
         id: item.id,
         quantity: item.quantity,
         price: item.price,
+        title: item.title,
       }),
     );
     // カート情報をJSONに変換
@@ -72,6 +78,7 @@ export async function PUT(request: NextRequest) {
     // Webhookのためのmetadataオブジェクトを初期化
     const metadata: Record<string, string> = {
       user_id: user.id,
+      email: session.user.email,
     };
     // 文字列を指定された長さで分割する補助関数
     const chunkString = (str: string, length: number): string[] => {
