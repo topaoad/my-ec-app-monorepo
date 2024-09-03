@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import { Product } from "@/app/libs/microcms";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { CartItem } from "@/store/cartAtom";
-import { Product } from "@/app/libs/microcms";
 import { MicroCMSListResponse } from "microcms-js-sdk";
+import React, { useState } from "react";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -49,23 +49,6 @@ export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "決済処理に失敗しました。");
-      }
-
-      // 決済完了メールの送信
-      const emailResponse = await fetch("/api/checkout-complete-mail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          cart,
-          totalAmount,
-        }),
-      });
-
-      if (!emailResponse.ok) {
-        console.error("決済完了メールの送信に失敗しました。");
       }
 
       const { url } = await response.json();

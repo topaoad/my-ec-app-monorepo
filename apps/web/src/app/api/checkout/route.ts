@@ -17,14 +17,15 @@ async function checkAndReserveStock(item: CartItem) {
     endpoint: "products",
     contentId: item.id,
   });
-  if (product.inventory < item.quantity) {
+  if (product.inventory - product.reservedInventory < item.quantity) {
     throw new Error(`商品:${item.title}は注文数が在庫を超えております `);
   }
   await client.update({
     endpoint: "products",
     contentId: item.id,
     content: {
-      inventory: item.inventory - item.quantity,
+      // 予約数は、microCMSの予約数に今回の注文数を加算する
+      reservedInventory: product.reservedInventory + item.quantity,
     },
   });
   return true;
@@ -49,7 +50,7 @@ export async function PUT(request: NextRequest) {
     // ユーザーの Stripe カスタマーIDを取得
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { stripeCustomerId: true },
+      select: { stripeCustomerId: true, id: true },
     });
 
     if (!user || !user.stripeCustomerId) {
@@ -59,14 +60,19 @@ export async function PUT(request: NextRequest) {
       );
     }
     // カート情報を最小限に絞る
-    const minimalCart = cart.map((item: { id: string; quantity: string }) => ({
-      id: item.id,
-      quantity: item.quantity,
-    }));
+    const minimalCart = cart.map(
+      (item: { id: string; quantity: string; price: number }) => ({
+        id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+      }),
+    );
     // カート情報をJSONに変換
     const cartJson = JSON.stringify(minimalCart);
     // Webhookのためのmetadataオブジェクトを初期化
-    const metadata: Record<string, string> = {};
+    const metadata: Record<string, string> = {
+      user_id: user.id,
+    };
     // 文字列を指定された長さで分割する補助関数
     const chunkString = (str: string, length: number): string[] => {
       const chunks = [];
