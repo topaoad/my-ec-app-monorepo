@@ -30,14 +30,14 @@ export async function Products({
   success,
 }: {
   offset?: number;
-  success: boolean;
+  success?: boolean;
 }) {
   const { contents: products, ...args } = await listProducts();
   const { totalCount, limit } = args;
   return (
     <>
       {/* /<Suspense fallback={<div>Loading中・・・</div>}> */}
-      <CartAtomCheck success={success} />
+      {success && <CartAtomCheck success={success} />}
       <div className="">
         <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">
           商品一覧
