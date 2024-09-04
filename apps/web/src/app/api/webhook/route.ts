@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { prisma } from "@/app/libs/prisma";
 import { stripe } from "@/app/libs/stripe";
 import { Prisma } from "@prisma/client";
@@ -41,53 +42,53 @@ export async function POST(req: NextRequest) {
     const cartItems = JSON.parse(session.metadata?.cart || "[]");
     // 【すべてのイベントタイプを確認】
     switch (event.type) {
-    // 決済が完了したときのイベント
-    case "checkout.session.completed":
-      // logToFile("Processing checkout.session.completed event");
-      await handleCheckoutSessionCompleted(session);
+      // 決済が完了したときのイベント
+      case "checkout.session.completed":
+        // logToFile("Processing checkout.session.completed event");
+        await handleCheckoutSessionCompleted(session);
 
-      // logToFile(`session: ${JSON.stringify(session)}`);
-      // logToFile(`Sending email to: ${session.metadata?.email}`);
-      // logToFile(`Cart items: ${JSON.stringify(cartItems)}`);
-      // logToFile(`Total amount: ${session.amount_total}`);
-      // Resendを使ってメールを送信
-      const internalResponse = await fetch(
-        `${process.env.BASE_URL}/api/checkout-complete-mail`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Internal-Call": "true", // 内部呼び出しを識別するためのヘッダー
+        // logToFile(`session: ${JSON.stringify(session)}`);
+        // logToFile(`Sending email to: ${session.metadata?.email}`);
+        // logToFile(`Cart items: ${JSON.stringify(cartItems)}`);
+        // logToFile(`Total amount: ${session.amount_total}`);
+        // Resendを使ってメールを送信
+        const internalResponse = await fetch(
+          `${process.env.BASE_URL}/api/checkout-complete-mail`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Internal-Call": "true", // 内部呼び出しを識別するためのヘッダー
+            },
+            body: JSON.stringify({
+              email: session.metadata?.email,
+              cart: cartItems,
+              totalAmount: session.amount_total,
+            }),
           },
-          body: JSON.stringify({
-            email: session.metadata?.email,
-            cart: cartItems,
-            totalAmount: session.amount_total,
-          }),
-        },
-      );
+        );
 
-      // レスポンスの詳細を常にログに記録
-      const responseText = await internalResponse.text();
-      // logToFile(`Internal response status: ${internalResponse.status}`);
-      // logToFile(`Internal response body: ${responseText}`);
+        // レスポンスの詳細を常にログに記録
+        const responseText = await internalResponse.text();
+        // logToFile(`Internal response status: ${internalResponse.status}`);
+        // logToFile(`Internal response body: ${responseText}`);
 
-      if (!internalResponse.ok) {
-        // logToFile(
-        //   `Failed to send checkout complete mail: ${await internalResponse.text()}`,
-        // );
-      }
-      break;
-    case "charge.succeeded":
-      // logToFile("Received charge.succeeded event");
-      break;
-    case "payment_intent.succeeded":
-      // logToFile("Received payment_intent.succeeded event");
-      break;
-    case "payment_intent.created":
-      // logToFile("Received payment_intent.created event");
-      break;
-    default:
+        if (!internalResponse.ok) {
+          // logToFile(
+          //   `Failed to send checkout complete mail: ${await internalResponse.text()}`,
+          // );
+        }
+        break;
+      case "charge.succeeded":
+        // logToFile("Received charge.succeeded event");
+        break;
+      case "payment_intent.succeeded":
+        // logToFile("Received payment_intent.succeeded event");
+        break;
+      case "payment_intent.created":
+        // logToFile("Received payment_intent.created event");
+        break;
+      default:
       // logToFile(`Unhandled event type: ${event.type}`);
     }
 
