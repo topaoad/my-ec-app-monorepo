@@ -1,4 +1,5 @@
 import { getProductById } from "@/app/libs/microcms";
+import BackButton from "@/components/Button/BackButton";
 import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -85,6 +86,9 @@ export default async function Product({
           <div className="bg-gray-100 p-4 rounded-lg">
             <h2 className="text-xl font-semibold mb-2">商品説明</h2>
             <p className="text-gray-700">{product.description}</p>
+          </div>
+          <div className="mt-5">
+            <BackButton />
           </div>
         </div>
       </div>
