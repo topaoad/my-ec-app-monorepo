@@ -5,7 +5,12 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/libs/auth";
 import { Products } from "./products/components/Products";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const success = searchParams?.success === "true";
   // サーバーセッション
   const session = await getServerSession(authOptions);
 
@@ -48,7 +53,7 @@ export default async function Home() {
 
   return (
     <>
-      <Products />
+      <Products success={success} />
       {/* メール送信用コンポーネント コメントアウト*/}
       {/* <SendMail /> */}
       {/* <Productsdemo /> */}
