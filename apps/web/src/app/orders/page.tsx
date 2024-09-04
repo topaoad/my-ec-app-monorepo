@@ -1,11 +1,19 @@
+import { ITEMS_PER_PAGE } from "@/app/constants/orders";
 import { authOptions } from "@/app/libs/auth";
+import { listProducts } from "@/app/libs/microcms";
 import { prisma } from "@/app/libs/prisma";
-import { stripe } from "@/app/libs/stripe";
+import OrdersBody from "@/components/orders/OrdersBody";
 import { Session } from "@/types/session";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 
-const OrdersPage = async () => {
+// サーバーコンポーネントでクエリパラメータを受け取る
+const OrdersPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
+  const page = Number(searchParams.page) || 1;
   const session = (await getServerSession(authOptions)) as Session;
 
   if (!session || !session.user?.email) {
@@ -17,41 +25,34 @@ const OrdersPage = async () => {
 
   // 購入履歴を取得
   try {
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { stripeCustomerId: true },
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+    // ユーザーの注文履歴を取得
+    const orders = await prisma.order.findMany({
+      where: { user: { email: session.user.email } },
+      include: { items: true, user: true },
+      orderBy: { createdAt: "desc" },
+      // 取得する注文の開始位置
+      skip,
+      // １回当たりに取得する注文数
+      take: ITEMS_PER_PAGE,
     });
 
-    if (!user || !user.stripeCustomerId) {
-      return NextResponse.json(
-        { error: "Stripe顧客情報が見つかりません。" },
-        { status: 404 },
-      );
-    }
-
-    const paymentIntents = await stripe.paymentIntents.list({
-      customer: user.stripeCustomerId,
-      limit: 100,
+    const productIds = orders.flatMap((order) =>
+      order.items.map((item) => item.productId),
+    );
+    const { contents: products } = await listProducts({
+      ids: productIds.join(","),
     });
-    const orders = paymentIntents.data.map((intent) => ({
-      id: intent.id,
-      amount: intent.amount,
-      date: new Date(intent.created * 1000).toISOString(),
-      status: intent.status,
-    }));
-
-    console.log("🤩orders", orders);
+    // 商品情報をMapに変換
+    const productMap = new Map(
+      products.map((product) => [product.id, product]),
+    );
 
     return (
       <>
-        {orders.map((order) => (
-          <div key={order.id}>
-            <p>注文日時: {order.date}</p>
-            <p>金額: {order.amount} 円</p>
-            <p>ステータス: {order.status}</p>
-          </div>
-        ))}
-        <div>{/* <OrdersBody orders={orders} /> */}</div>
+        <div>
+          <OrdersBody orders={orders} productMap={productMap} />
+        </div>
       </>
     );
   } catch (error) {
