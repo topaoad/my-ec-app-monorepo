@@ -2,9 +2,15 @@ import { z } from "zod";
 import type { UserWithRelations } from "./UserSchema";
 import type { UserPartialWithRelations } from "./UserSchema";
 import type { UserOptionalDefaultsWithRelations } from "./UserSchema";
+import type { OrderItemWithRelations } from "./OrderItemSchema";
+import type { OrderItemPartialWithRelations } from "./OrderItemSchema";
+import type { OrderItemOptionalDefaultsWithRelations } from "./OrderItemSchema";
 import { UserWithRelationsSchema } from "./UserSchema";
 import { UserPartialWithRelationsSchema } from "./UserSchema";
 import { UserOptionalDefaultsWithRelationsSchema } from "./UserSchema";
+import { OrderItemWithRelationsSchema } from "./OrderItemSchema";
+import { OrderItemPartialWithRelationsSchema } from "./OrderItemSchema";
+import { OrderItemOptionalDefaultsWithRelationsSchema } from "./OrderItemSchema";
 
 /////////////////////////////////////////
 // ORDER SCHEMA
@@ -12,9 +18,9 @@ import { UserOptionalDefaultsWithRelationsSchema } from "./UserSchema";
 
 export const OrderSchema = z.object({
   id: z.string().cuid(),
+  stripeSessionId: z.string(),
   userId: z.string(),
-  productId: z.string(),
-  quantity: z.number().int(),
+  totalAmount: z.number().int(),
   status: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
@@ -50,6 +56,7 @@ export type OrderOptionalDefaults = z.infer<typeof OrderOptionalDefaultsSchema>;
 
 export type OrderRelations = {
   user: UserWithRelations;
+  items: OrderItemWithRelations[];
 };
 
 export type OrderWithRelations = z.infer<typeof OrderSchema> & OrderRelations;
@@ -58,6 +65,7 @@ export const OrderWithRelationsSchema: z.ZodType<OrderWithRelations> =
   OrderSchema.merge(
     z.object({
       user: z.lazy(() => UserWithRelationsSchema),
+      items: z.lazy(() => OrderItemWithRelationsSchema).array(),
     }),
   );
 
@@ -67,6 +75,7 @@ export const OrderWithRelationsSchema: z.ZodType<OrderWithRelations> =
 
 export type OrderOptionalDefaultsRelations = {
   user: UserOptionalDefaultsWithRelations;
+  items: OrderItemOptionalDefaultsWithRelations[];
 };
 
 export type OrderOptionalDefaultsWithRelations = z.infer<
@@ -78,6 +87,7 @@ export const OrderOptionalDefaultsWithRelationsSchema: z.ZodType<OrderOptionalDe
   OrderOptionalDefaultsSchema.merge(
     z.object({
       user: z.lazy(() => UserOptionalDefaultsWithRelationsSchema),
+      items: z.lazy(() => OrderItemOptionalDefaultsWithRelationsSchema).array(),
     }),
   );
 
@@ -87,6 +97,7 @@ export const OrderOptionalDefaultsWithRelationsSchema: z.ZodType<OrderOptionalDe
 
 export type OrderPartialRelations = {
   user?: UserPartialWithRelations;
+  items?: OrderItemPartialWithRelations[];
 };
 
 export type OrderPartialWithRelations = z.infer<typeof OrderPartialSchema> &
@@ -96,6 +107,7 @@ export const OrderPartialWithRelationsSchema: z.ZodType<OrderPartialWithRelation
   OrderPartialSchema.merge(
     z.object({
       user: z.lazy(() => UserPartialWithRelationsSchema),
+      items: z.lazy(() => OrderItemPartialWithRelationsSchema).array(),
     }),
   ).partial();
 
@@ -109,6 +121,7 @@ export const OrderOptionalDefaultsWithPartialRelationsSchema: z.ZodType<OrderOpt
     z
       .object({
         user: z.lazy(() => UserPartialWithRelationsSchema),
+        items: z.lazy(() => OrderItemPartialWithRelationsSchema).array(),
       })
       .partial(),
   );
@@ -121,6 +134,7 @@ export const OrderWithPartialRelationsSchema: z.ZodType<OrderWithPartialRelation
     z
       .object({
         user: z.lazy(() => UserPartialWithRelationsSchema),
+        items: z.lazy(() => OrderItemPartialWithRelationsSchema).array(),
       })
       .partial(),
   );

@@ -42,6 +42,7 @@ export const UserSchema = z.object({
   emailVerified: z.coerce.date().nullish(),
   image: z.string().nullish(),
   lastLogin: z.coerce.date().nullish(),
+  stripeCustomerId: z.string().nullish(),
 });
 
 export type User = z.infer<typeof UserSchema>;

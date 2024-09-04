@@ -8,6 +8,7 @@ export const UserScalarFieldEnumSchema = z.enum([
   "emailVerified",
   "image",
   "lastLogin",
+  "stripeCustomerId",
 ]);
 
 export default UserScalarFieldEnumSchema;
