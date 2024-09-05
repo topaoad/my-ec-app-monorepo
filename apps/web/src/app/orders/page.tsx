@@ -13,7 +13,7 @@ const OrdersPage = async ({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const page = Number(searchParams.page) || 1;
+  const currentPage = Number(searchParams.page) || 1;
   const session = (await getServerSession(authOptions)) as Session;
 
   if (!session || !session.user?.email) {
@@ -25,7 +25,14 @@ const OrdersPage = async ({
 
   // 購入履歴を取得
   try {
-    const skip = (page - 1) * ITEMS_PER_PAGE;
+    const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+    // 注文総数を取得
+    const totalOrders = await prisma.order.count({
+      where: { user: { email: session.user.email } },
+    });
+
+    const totalPages = Math.ceil(totalOrders / ITEMS_PER_PAGE);
+
     // ユーザーの注文履歴を取得
     const orders = await prisma.order.findMany({
       where: { user: { email: session.user.email } },
@@ -51,7 +58,12 @@ const OrdersPage = async ({
     return (
       <>
         <div>
-          <OrdersBody orders={orders} productMap={productMap} />
+          <OrdersBody
+            orders={orders}
+            productMap={productMap}
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
         </div>
       </>
     );
