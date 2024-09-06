@@ -1,7 +1,8 @@
+import { ITEMS_PER_PAGE } from "@/app/constants/orders";
 import { listProducts } from "@/app/libs/microcms";
 import CardFooterArea from "@/components/Card/CardFooter";
+import CustomPagination from "@/components/CustomPagination";
 import CartAtomCheck from "@/components/home/CartAtomCheck";
-import { Pagination } from "@/components/layouts/Pagenation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cva } from "class-variance-authority";
@@ -28,12 +29,17 @@ export const buttonVariants = cva("btn", {
 export async function Products({
   offset,
   success,
+  currentPage,
 }: {
   offset?: number;
   success?: boolean;
+  currentPage: number;
 }) {
   const { contents: products, ...args } = await listProducts();
   const { totalCount, limit } = args;
+  // totalPagesを計算
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
   return (
     <>
       {/* /<Suspense fallback={<div>Loading中・・・</div>}> */}
@@ -82,7 +88,11 @@ export async function Products({
           ))}
         </div>
         <div className="flex justify-center items-center my-8">
-          <Pagination totalCount={totalCount} limit={limit} />
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            href={"/"}
+          />
         </div>
         {/* </Suspense > */}
       </div>

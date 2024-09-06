@@ -10,6 +10,7 @@ export default async function Home({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const currentPage = Number(searchParams.page) || 1;
   const success = searchParams?.success === "true";
   // サーバーセッション
   const session = await getServerSession(authOptions);
@@ -53,7 +54,7 @@ export default async function Home({
 
   return (
     <>
-      <Products success={success} />
+      <Products success={success} currentPage={currentPage} />
       {/* メール送信用コンポーネント コメントアウト*/}
       {/* <SendMail /> */}
       {/* <Productsdemo /> */}

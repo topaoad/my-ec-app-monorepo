@@ -2,15 +2,9 @@
 
 import { useAddToCart } from "@/app/hooks/useAddToCart";
 import { Product } from "@/app/libs/microcms";
+import CustomPagination from "@/components/CustomPagination";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import { CustomOrderWithRelations } from "@/types/orders";
 import { Button, Card } from "@mantine/core";
 import { ShoppingCart } from "lucide-react";
@@ -28,8 +22,6 @@ interface OrdersProps {
 const OrdersBody: FC<OrdersProps> = (props) => {
   const { orders, productMap, currentPage, totalPages } = props;
   const { handleAddToCart } = useAddToCart();
-
-  console.log(currentPage, totalPages);
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">
@@ -81,39 +73,11 @@ const OrdersBody: FC<OrdersProps> = (props) => {
           </Card>
         ))}
       </div>
-      <div className="flex justify-center items-center my-8">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href={`/orders?page=${Math.max(1, currentPage - 1)}`}
-              />
-            </PaginationItem>
-            {/* <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem> */}
-            {[...Array(totalPages)].map((_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  href={`/orders?page=${index + 1}`}
-                  isActive={currentPage === index + 1}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                href={`/orders?page=${Math.min(totalPages, currentPage + 1)}`}
-                aria-disabled={currentPage === totalPages}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <CustomPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        href={"/orders"}
+      />
     </div>
   );
 };
