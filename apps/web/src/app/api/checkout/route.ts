@@ -123,7 +123,7 @@ export async function PUT(request: NextRequest) {
       })),
       mode: "payment",
       // success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      success_url: `${origin}?success=true?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: referer,
       metadata: metadata,
     });

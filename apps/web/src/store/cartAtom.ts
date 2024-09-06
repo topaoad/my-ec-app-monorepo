@@ -46,3 +46,8 @@ export const updateCartQuantityAtom = atom(
     );
   },
 );
+
+// cartAtomを全て空にする
+export const clearCartAtom = atom(null, (get, set) => {
+  set(cartAtom, []);
+});
