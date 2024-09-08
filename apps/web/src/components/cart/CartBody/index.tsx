@@ -47,6 +47,12 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
       .filter((item): item is CartItem => item !== null);
   }, [cart, products, isClient]);
 
+  // 購入するボタン用に、cartItemsはquantityが０より大きいものだけに絞り込む
+  const filteredCartItems = useMemo(
+    () => cartItems.filter((item) => item.quantity > 0),
+    [cartItems],
+  );
+
   const totalAmount = useMemo(
     () =>
       cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
@@ -145,18 +151,20 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
             <p className="text-xl font-bold">
               合計: {totalAmount.toLocaleString()}円
             </p>
+            {/* 購入するボタンはtotalAmountが０の時はdisabledにする */}
             <Button
               variant="custom"
               size="lg"
               className="mt-4"
               onClick={handleCheckout}
+              disabled={totalAmount === 0}
             >
               購入する
             </Button>
             <CheckoutModalV2
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              cart={cartItems}
+              cart={filteredCartItems}
               products={products}
               totalAmount={totalAmount}
               email={session?.user?.email ?? ""}
