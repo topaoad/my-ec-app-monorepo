@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { randomBytes, randomUUID } from "crypto";
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import LineProvider from "next-auth/providers/line";
+// import LineProvider from "next-auth/providers/line";
 
 const prisma = new PrismaClient();
 
@@ -21,10 +21,13 @@ export const authOptions: NextAuthOptions = {
       // 以前のアカウントとのリンクを維持できる　検証用としては有効だが、本番環境では使用しないこと
       allowDangerousEmailAccountLinking: true,
     }),
-    LineProvider({
-      clientId: process.env.LINE_CLIENT_ID ?? "",
-      clientSecret: process.env.LINE_CLIENT_SECRET ?? "",
-    }),
+    // LINEログインのプロバイダーを追加は、メールアドレスの取得申請が終わったら追加する。
+    // なお、申請に合わせてプライバシーポリシーの作成が必要
+    // https://developers.line.biz/ja/docs/line-login/integrate-line-login/#applying-for-email-permission
+    // LineProvider({
+    //   clientId: process.env.LINE_CLIENT_ID ?? "",
+    //   clientSecret: process.env.LINE_CLIENT_SECRET ?? "",
+    // }),
   ],
   callbacks: {
     async jwt({ token, user }: any) {
