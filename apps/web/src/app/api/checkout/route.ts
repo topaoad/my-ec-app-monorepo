@@ -59,11 +59,18 @@ export async function PUT(request: NextRequest) {
         { status: 404 },
       );
     }
+    // cartにquantityが０の商品がある場合は除外
+    const filteredCart = cart.filter(
+      (item: { id: string; quantity: number; price: number; title: string }) =>
+        item.quantity > 0,
+    );
+    console.log(filteredCart);
+
     // カート情報を最小限に絞る
-    const minimalCart = cart.map(
+    const minimalCart = filteredCart.map(
       (item: {
         id: string;
-        quantity: string;
+        quantity: number;
         price: number;
         title: string;
       }) => ({
@@ -110,17 +117,25 @@ export async function PUT(request: NextRequest) {
     const stripeSession = await stripe.checkout.sessions.create({
       customer: user.stripeCustomerId,
       payment_method_types: ["card"],
-      line_items: cart.map((item: any) => ({
-        price_data: {
-          currency: "jpy",
-          product_data: {
-            name: item.title,
-            images: [item.image?.url],
+      line_items: filteredCart.map(
+        (item: {
+          id: string;
+          quantity: number;
+          price: number;
+          title: string;
+          image?: { url: string };
+        }) => ({
+          price_data: {
+            currency: "jpy",
+            product_data: {
+              name: item.title,
+              images: [item.image?.url],
+            },
+            unit_amount: item.price,
           },
-          unit_amount: item.price,
-        },
-        quantity: item.quantity,
-      })),
+          quantity: item.quantity,
+        }),
+      ),
       mode: "payment",
       // success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       success_url: `${origin}?success=true&session_id={CHECKOUT_SESSION_ID}`,
