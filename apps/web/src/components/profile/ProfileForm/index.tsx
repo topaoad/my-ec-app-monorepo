@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@prisma/client";
-import { Camera } from "lucide-react";
+// import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -54,14 +54,13 @@ export default function ProfileForm({ user }: ProfileFormProps) {
   const { isSubmitting, errors } = formState;
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
     const formData = new FormData();
     formData.append("id", user.id);
     formData.append("name", data.name);
     // data.imageはファイル名+拡張子
-    // if (data.image instanceof File) {
-    //   formData.append("image", data.image);
-    // }
+    if (data.image instanceof File) {
+      formData.append("image", data.image);
+    }
 
     try {
       const response = await fetch(
@@ -148,7 +147,8 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                       )
                     );
                   })()}
-                  <FormControl>
+                  {/* S3は課金されるので、実装はできたが一旦コメントアウトとする。 */}
+                  {/* <FormControl>
                     <div className="flex items-center justify-end space-x-2 w-28 !mt-[-8px]">
                       <Button
                         type="button"
@@ -172,7 +172,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                         ref={fileInputRef}
                       />
                     </div>
-                  </FormControl>
+                  </FormControl> */}
                   <FormMessage />
                 </FormItem>
               )}
@@ -185,7 +185,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
             )}
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button variant="custom" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "更新中..." : "更新"}
             </Button>
           </CardFooter>
