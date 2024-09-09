@@ -22,11 +22,24 @@ export const GET = async (req: Request) => {
 // ユーザー情報とそのプロファイル情報を更新する
 export const PUT = async (req: Request) => {
   try {
-    const { id, name } = await req.json();
+    // const { id, name } = await req.json();
+    const formData = await req.formData();
+    const id = formData.get("id") as string;
+    const name = formData.get("name") as string;
+    const image = formData.get("image") as File | null;
+
+    let imageUrl: string | undefined;
+
+    // S3へのアップロード処理を行う
+    if (image) {
+      // 今の所繋ぎ合わせていないので、画像は変わらない
+      // imageUrl = await uploadToS3(image);
+    }
+
     // ユーザー情報を更新
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: { name },
+      data: { name, ...(imageUrl && { image: imageUrl }) },
     });
 
     return NextResponse.json({ updatedUser }, { status: 200 });
