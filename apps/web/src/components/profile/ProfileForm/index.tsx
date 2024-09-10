@@ -63,6 +63,8 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     }
 
     try {
+      // 更新後はホームページにリダイレクト
+      router.push("/");
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/user`,
         {

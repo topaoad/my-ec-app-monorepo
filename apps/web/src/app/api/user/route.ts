@@ -43,7 +43,7 @@ export const PUT = async (req: Request) => {
     // ユーザー情報を更新
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: { name, ...(imageUrl && { image: imageUrl }) },
+      data: { name, isNewUser: false, ...(imageUrl && { image: imageUrl }) },
     });
 
     return NextResponse.json({ updatedUser }, { status: 200 });

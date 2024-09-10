@@ -33,13 +33,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
-        // 初回ログインユーザーかどうかを判定
-        const dbUser = await prisma.user.findUnique({
-          where: { id: user.id },
-          select: { lastLogin: true },
-        });
-        token.isNewUser = !dbUser?.lastLogin;
-
         // Update lastLogin
         await prisma.user.update({
           where: { id: user.id },
@@ -51,7 +44,6 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.isNewUser = token.isNewUser as boolean;
       }
       return session;
     },
