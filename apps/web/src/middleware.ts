@@ -17,7 +17,13 @@ export default withAuth(
     }
 
     // 初回ログインユーザーがプロフィールページ以外にアクセスした場合、プロフィールページにリダイレクト
-    if (token && token?.isNewUser && !isProfilePage) {
+    const res = await fetch(`${process.env.BASE_URL}/api/check-isnewuser`, {
+      headers: {
+        cookie: req.headers.get("cookie") || "",
+      },
+    });
+    const { isNewUser } = await res.json();
+    if (isNewUser && !isProfilePage) {
       return NextResponse.redirect(new URL("/profile", req.url));
     }
 

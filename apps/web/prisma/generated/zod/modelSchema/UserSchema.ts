@@ -43,6 +43,7 @@ export const UserSchema = z.object({
   image: z.string().nullish(),
   lastLogin: z.coerce.date().nullish(),
   stripeCustomerId: z.string().nullish(),
+  isNewUser: z.boolean(),
 });
 
 export type User = z.infer<typeof UserSchema>;
@@ -62,6 +63,7 @@ export type UserPartial = z.infer<typeof UserPartialSchema>;
 export const UserOptionalDefaultsSchema = UserSchema.merge(
   z.object({
     id: z.string().cuid().optional(),
+    isNewUser: z.boolean().optional(),
   }),
 );
 

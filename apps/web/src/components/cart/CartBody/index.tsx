@@ -82,7 +82,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   return (
     <div className="container mx-auto px-4 max-w-7xl">
       <h1 className="text-3xl font-bold text-center my-8 text-purple-800 dark:text-purple-300">
-        買い物カート
+        買い物かご
       </h1>
       {cartItems.length === 0 ? (
         <p className="text-center">カートは空です。</p>

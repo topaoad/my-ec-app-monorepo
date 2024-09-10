@@ -22,6 +22,7 @@ model User {
   image         String?
   lastLogin     DateTime?
   stripeCustomerId String?
+  isNewUser     Boolean   @default(true)
   accounts      Account[]
   sessions      Session[]
   purchases     Purchase[]
