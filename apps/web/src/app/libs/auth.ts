@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import { randomBytes, randomUUID } from "crypto";
 import NextAuth, { type NextAuthOptions } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 // import LineProvider from "next-auth/providers/line";
 
@@ -19,6 +20,11 @@ export const authOptions: NextAuthOptions = {
       // allowDangerousEmailAccountLinkingをtrueに設定
       // これにより、Googleアカウントのメールアドレスが変更された場合にも、
       // 以前のアカウントとのリンクを維持できる　検証用としては有効だが、本番環境では使用しないこと
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID ?? "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "",
       allowDangerousEmailAccountLinking: true,
     }),
     // LINEログインのプロバイダーを追加は、メールアドレスの取得申請が終わったら追加する。
@@ -77,7 +83,7 @@ export const authOptions: NextAuthOptions = {
       return baseUrl;
     },
     async signIn({ user, account, profile }: any) {
-      if (account?.provider === "google") {
+      if (account?.provider === "google" || account?.provider === "github") {
         try {
           let dbUser = await prisma.user.findUnique({
             where: { email: user.email! },
