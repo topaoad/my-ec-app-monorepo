@@ -63,8 +63,6 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     }
 
     try {
-      // 更新後はホームページにリダイレクト
-      router.push("/");
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/user`,
         {
@@ -72,11 +70,12 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           body: formData,
         },
       );
-
+      
       if (!response.ok) {
         throw new Error("Failed to update profile");
       }
-
+      // 更新後はホームページにリダイレクト
+      router.push("/");
       router.refresh();
     } catch (error) {
       console.error("Error updating profile:", error);
