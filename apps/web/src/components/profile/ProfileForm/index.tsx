@@ -76,7 +76,6 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       }
       // 更新後はホームページにリダイレクト
       router.push("/");
-      router.refresh();
     } catch (error) {
       console.error("Error updating profile:", error);
       // エラーをフォームに設定し、FormMessageで表示する
