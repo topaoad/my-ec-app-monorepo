@@ -1,4 +1,28 @@
-# Welcome to your Expo app 👋
+# React Nativeによるネイティブアプリの開発
+
+Next.jsで作成したECサイトのネイティブアプリをReact Native(Expo)で作成します
+
+## 開発環境
+
+- Expo Goを使用してiOSの実機で動作確認を行います。
+- ビルド及びデプロイを行う場合はEAS(Expo Application Services)を使います。
+
+## 技術スタック
+
+- React Native(Expo)
+- Tailwind CSS(未導入)
+
+## 技術スタックの課題
+
+- NextAuth.jsの認証機能をReact Nativeで実装可能？
+- PrismaのORMをReact Nativeで実装可能？
+
+##　モノレポ構造について
+
+- React Native使われているモジュールバンドラーのMetroはモノレポと相性が悪いと思われる。
+  今後手詰まりが頻発するようなら、モノレポ解消も検討する。
+
+<!-- # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
@@ -47,4 +71,4 @@ To learn more about developing your project with Expo, look at the following res
 Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions. -->
