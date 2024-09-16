@@ -2006,7 +2006,7 @@
     postcss "~8.4.32"
     resolve-from "^5.0.0"
 
-"@expo/metro-runtime@3.2.3":
+"@expo/metro-runtime@3.2.3", "@expo/metro-runtime@^3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@expo/metro-runtime/-/metro-runtime-3.2.3.tgz#e074c28084f30725f8d0d0eeee4fcd6074797d2d"
   integrity sha512-v5ji+fAGi7B9YavrxvekuF8gXEV/5fz0+PhaED5AaFDnbGB4IJIbpaiqK9nqZV1axjGZNQSw6Q8TsnFetCR3bQ==
@@ -8738,6 +8738,13 @@ expo-asset@~10.0.10:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-camera@^15.0.16:
+  version "15.0.16"
+  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-15.0.16.tgz#149f25304ae7d76ae55653ca16f947e9f437c782"
+  integrity sha512-FLE02DMqkjwsb7IugKAqQvBe6s+TCQeb5LupO1+r//wAhBwmHncOrc6zV95ZEC2f9PTPK34nFH/s8CDGiVzIAA==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-constants@~16.0.0, expo-constants@~16.0.2:
   version "16.0.2"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-16.0.2.tgz#eb5a1bddb7308fd8cadac8fc44decaf4784cac5e"
@@ -8745,6 +8752,11 @@ expo-constants@~16.0.0, expo-constants@~16.0.2:
   dependencies:
     "@expo/config" "~9.0.0"
     "@expo/env" "~0.3.0"
+
+expo-contacts@^13.0.5:
+  version "13.0.5"
+  resolved "https://registry.yarnpkg.com/expo-contacts/-/expo-contacts-13.0.5.tgz#c8d8818c5a82cc15fbd38be2f5ac6a321a734cfb"
+  integrity sha512-jFdmrh0c7iMfaxEmt7bbDTBoz5Onyq3uLhvLxWzhb3dFXsEtQ/6SsdATtXbNQ9cP8gsD3itz3Ev2oxYXGFAMQw==
 
 expo-file-system@~17.0.1:
   version "17.0.1"
@@ -8805,6 +8817,13 @@ expo-router@~3.5.23:
     expo-splash-screen "0.27.5"
     react-native-helmet-async "2.0.4"
     schema-utils "^4.0.1"
+
+expo-sensors@^13.0.9:
+  version "13.0.9"
+  resolved "https://registry.yarnpkg.com/expo-sensors/-/expo-sensors-13.0.9.tgz#7c937925df131f6ea3abd247d60464f80987eb42"
+  integrity sha512-yi/TERUP8dpsJWWRgjT+UuQ7PI604PMndwXh9iBnfNO7q+dtoKZKsVSNJw61IKLNflbtCAyJxgmzPoe/JDT04Q==
+  dependencies:
+    invariant "^2.2.4"
 
 expo-splash-screen@0.27.5, expo-splash-screen@~0.27.5:
   version "0.27.5"
