@@ -70,7 +70,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
           body: formData,
         },
       );
-      
+
       if (!response.ok) {
         throw new Error("Failed to update profile");
       }

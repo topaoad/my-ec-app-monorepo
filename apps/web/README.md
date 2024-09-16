@@ -127,9 +127,9 @@ WebHookでは以下の項目を実装
 - vercelにデプロイした際、ルートハンドラーからは環境変数が読めなかったため、next.config.mjs に環境変数を設定してビルド時にインラインで埋め込むようにした
 
 ### Auth.jsによる認証メモ
-- Googleアカウントをエイリアスで作成した別ユーザーでログインしようとするとエラーとなる
-　これを回避するため、allowDangerousEmailAccountLinking: true を設定している
 
+- Googleアカウントをエイリアスで作成した別ユーザーでログインしようとするとエラーとなる
+  　これを回避するため、allowDangerousEmailAccountLinking: true を設定している
 
 2024/9/9 今後の新機能開発の予定
 
