@@ -1,4 +1,3 @@
-import { createClient } from "microcms-js-sdk";
 import type {
   CustomRequestInit,
   MicroCMSContentId,
@@ -7,6 +6,8 @@ import type {
   MicroCMSListResponse,
   MicroCMSQueries,
 } from "microcms-js-sdk";
+import { createClient } from "microcms-js-sdk";
+import { cache } from "react";
 
 // if (!process.env.MICROCMS_SERVICE_DOMAIN) {
 //   throw new Error('MICROCMS_SERVICE_DOMAIN is required')
@@ -45,7 +46,7 @@ export type Product = {
 } & MicroCMSContentId &
   MicroCMSDate;
 
-export const listProducts = async (queries: MicroCMSQueries = {}) => {
+export const listProducts = cache(async (queries: MicroCMSQueries = {}) => {
   const pageLimit = 4;
   const offset = queries?.offset ? queries?.offset * pageLimit : 0;
   return client.getList<Product>({
@@ -57,7 +58,7 @@ export const listProducts = async (queries: MicroCMSQueries = {}) => {
       offset,
     },
   });
-};
+});
 
 export const getProductById = async (
   id: string,
