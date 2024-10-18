@@ -12,7 +12,9 @@ describe("delay function", () => {
   });
 
   it("rejects when time is negative", async () => {
-    await expect(delay("Hello", -1)).rejects.toThrow("timeは0以上で指定してください");
+    await expect(delay("Hello", -1)).rejects.toThrow(
+      "timeは0以上で指定してください",
+    );
   });
 
   it("resolves immediately when time is 0", async () => {
