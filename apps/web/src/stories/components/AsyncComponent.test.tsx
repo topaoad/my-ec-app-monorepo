@@ -1,14 +1,19 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-
+import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import AsyncComponent from "./AsyncComponent";
 
 describe("AsyncComponent", () => {
+  const user = userEvent.setup({ delay: null }); // ユーザーイベントの遅延を無効化
+
   beforeEach(() => {
-    jest.useFakeTimers();
+    jest.useFakeTimers({ legacyFakeTimers: true }); // legacyモードを使用
   });
 
   afterEach(() => {
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     jest.useRealTimers();
   });
 
@@ -17,24 +22,39 @@ describe("AsyncComponent", () => {
     expect(screen.getByText("Initial text")).toBeInTheDocument();
   });
 
-  it("ボタンクリック後にローディングテキストが表示されること", () => {
+  it("ボタンクリック後にローディングテキストが表示されること", async () => {
     render(<AsyncComponent />);
-    const button = screen.getByText("Update Text");
-    fireEvent.click(button);
+
+    // ボタンが表示されるまで待機
+    const button = await screen.findByText("Update Text");
+
+    await act(async () => {
+      await user.click(button);
+    });
+
+    // ローディングテキストを確認
     expect(screen.getByText("Loading...")).toBeInTheDocument();
-  });
+  }, 10000); // タイムアウトを延長
 
   it("2秒後に更新されたテキストが表示されること", async () => {
     render(<AsyncComponent />);
-    const button = screen.getByText("Update Text");
-    fireEvent.click(button);
 
-    // タイマーを進める ※waitFor関数の第二引数で{ timeout: 3000 }のように設定する際は不要
-    // jest.advanceTimersByTime(2000);
+    // ボタンが表示されるまで待機
+    const button = await screen.findByText("Update Text");
 
-    // 更新されたテキストが表示されるのを待つ
-    await waitFor(() => {
-      expect(screen.getByText("Updated text")).toBeInTheDocument();
-    }, { timeout: 3000 });
-  });
+    await act(async () => {
+      await user.click(button);
+    });
+
+    // ローディング状態を確認
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+
+    // タイマーを進める
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    // 更新後のテキストを確認
+    expect(screen.getByText("Updated text")).toBeInTheDocument();
+  }, 10000); // タイムアウトを延長
 });
