@@ -39,7 +39,7 @@ export default function SessionTip({ session }: { session: Session | null }) {
           </p>
           <button
             onClick={handleSignIn}
-            className="bg-purple-600 hover:bg-purple-700 text-white w-full flex items-center justify-center  font-semibold py-3 px-4  rounded-lg shadow transition duration-300 ease-in-out mb-4"
+            className="bg-purple-600 hover:bg-purple-700 text-white w-full flex items-center justify-center  font-semibold py-3 px-4  rounded-lg shadow-sm transition duration-300 ease-in-out mb-4"
           >
             <ExternalLink className="w-5 h-5 mr-2" />
             Googleでログイン
@@ -52,7 +52,7 @@ export default function SessionTip({ session }: { session: Session | null }) {
           </div>
           <button
             onClick={() => signIn()}
-            className="w-full bg-white hover:bg-gray-100 text-gray-800 border border-gray-400 font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="w-full bg-white hover:bg-gray-100 text-gray-800 border border-gray-400 font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             他の方法でログイン
           </button>
@@ -70,7 +70,7 @@ export default function SessionTip({ session }: { session: Session | null }) {
   //       </p>
   //       <button
   //         onClick={() => signOut()}
-  //         className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+  //         className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
   //       >
   //         ログアウト
   //       </button>

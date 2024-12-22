@@ -110,7 +110,7 @@ const FaviritesBody: FC<FaviritesProps> = ({ favoriteProducts }) => {
                     )}
                   </CardHeader>
                 </Link>
-                <CardContent className="flex-grow p-4 ">
+                <CardContent className="grow p-4 ">
                   <CardTitle className="text-xl mb-2">{item.title}</CardTitle>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                     {item.description}

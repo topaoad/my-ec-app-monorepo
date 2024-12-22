@@ -68,7 +68,7 @@ export async function Products({
                     </div>
                   )}
                 </CardHeader>
-                <CardContent className="flex-grow p-4">
+                <CardContent className="grow p-4">
                   <CardTitle className="text-xl mb-2">
                     {product.title}
                   </CardTitle>
