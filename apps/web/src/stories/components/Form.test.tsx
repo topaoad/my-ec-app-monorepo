@@ -5,13 +5,15 @@ import Form from "./Form";
 describe("Formコンポーネントのテスト", () => {
   it("初期状態で入力フィールドが空であること", () => {
     render(<Form />);
-    const inputElement = screen.getByPlaceholderText("Enter text") as HTMLInputElement;
+    const inputElement = screen.getByPlaceholderText(
+      "Enter text",
+    ) as HTMLInputElement;
     expect(inputElement.value).toBe("");
     expect(inputElement).toBeInTheDocument();
   });
 
   it("テキスト入力後にサブミットが正しく動作すること", () => {
-    const alertMock = jest.spyOn(window, "alert").mockImplementation(() => { });
+    const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {});
     render(<Form />);
 
     const inputElement = screen.getByPlaceholderText("Enter text");

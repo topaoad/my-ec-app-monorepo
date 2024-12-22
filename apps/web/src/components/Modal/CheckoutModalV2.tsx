@@ -90,7 +90,7 @@ export const CheckoutModalV2: React.FC<CheckoutModalProps> = ({
             name="email"
             value={email}
             readOnly
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-indigo-300 focus:ring-3 focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
           />
           {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
           <DialogFooter className="mt-6">

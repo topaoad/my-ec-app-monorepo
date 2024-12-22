@@ -149,7 +149,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   })()}
                   {/* S3は課金されるので、実装はできたが一旦コメントアウトとする。 */}
                   {/* <FormControl>
-                    <div className="flex items-center justify-end space-x-2 w-28 !mt-[-8px]">
+                    <div className="flex items-center justify-end space-x-2 w-28 mt-[-8px]!">
                       <Button
                         type="button"
                         variant="outline"
