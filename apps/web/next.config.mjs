@@ -11,9 +11,6 @@ const nextConfig = {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     STRIPE_SECRET_API_KEY: process.env.STRIPE_SECRET_API_KEY,
   },
-  typescript: {
-    tsconfigPath: "./tsconfig.build.json",
-  },
 };
 
 export default nextConfig;
