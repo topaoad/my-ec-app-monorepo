@@ -1,6 +1,6 @@
 "use client";
 
-// import { Pagination } from './layouts/Pagenation'
+// import { Pagination } from './layouts/Pagenation'wewew
 import { MicroCMSImage, createClient } from "microcms-js-sdk";
 import useSWR from "swr";
 
