@@ -3,6 +3,7 @@
 // import { Pagination } from './layouts/Pagenation'wewew
 import { MicroCMSImage, createClient } from "microcms-js-sdk";
 import useSWR from "swr";
+// hogehoge
 
 // クライアント側でuseSWRを使用してデータを取得
 export function Productsdemo({ offset }: { offset?: number }) {
