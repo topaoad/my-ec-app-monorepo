@@ -1,16 +1,24 @@
 import { z } from "zod";
-import type { UserWithRelations } from "./UserSchema";
-import type { UserPartialWithRelations } from "./UserSchema";
-import type { UserOptionalDefaultsWithRelations } from "./UserSchema";
-import type { OrderItemWithRelations } from "./OrderItemSchema";
-import type { OrderItemPartialWithRelations } from "./OrderItemSchema";
-import type { OrderItemOptionalDefaultsWithRelations } from "./OrderItemSchema";
-import { UserWithRelationsSchema } from "./UserSchema";
-import { UserPartialWithRelationsSchema } from "./UserSchema";
-import { UserOptionalDefaultsWithRelationsSchema } from "./UserSchema";
-import { OrderItemWithRelationsSchema } from "./OrderItemSchema";
-import { OrderItemPartialWithRelationsSchema } from "./OrderItemSchema";
-import { OrderItemOptionalDefaultsWithRelationsSchema } from "./OrderItemSchema";
+import {
+  UserWithRelationsSchema,
+  UserPartialWithRelationsSchema,
+  UserOptionalDefaultsWithRelationsSchema,
+} from "./UserSchema";
+import type {
+  UserWithRelations,
+  UserPartialWithRelations,
+  UserOptionalDefaultsWithRelations,
+} from "./UserSchema";
+import {
+  OrderItemWithRelationsSchema,
+  OrderItemPartialWithRelationsSchema,
+  OrderItemOptionalDefaultsWithRelationsSchema,
+} from "./OrderItemSchema";
+import type {
+  OrderItemWithRelations,
+  OrderItemPartialWithRelations,
+  OrderItemOptionalDefaultsWithRelations,
+} from "./OrderItemSchema";
 
 /////////////////////////////////////////
 // ORDER SCHEMA

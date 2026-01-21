@@ -24,7 +24,8 @@ describe("SnapshotComponent", () => {
   });
 
   it("should handle long text content", () => {
-    const longText = "This is a very long text to test how the component handles larger content";
+    const longText =
+      "This is a very long text to test how the component handles larger content";
     const { container } = render(<SnapshotComponent text={longText} />);
     const paragraph = screen.getByText(longText);
     expect(paragraph).toBeInTheDocument();

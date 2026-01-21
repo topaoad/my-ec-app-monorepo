@@ -52,7 +52,7 @@ export const Default: Story = {
     // デクリメントのテスト
     await userEvent.click(decrementButton);
     expect(canvas.getByText("Count: 0")).toBeInTheDocument();
-  }
+  },
 };
 
 /**
@@ -82,7 +82,7 @@ export const WithInitialCount: Story = {
     // デクリメント操作
     await userEvent.click(decrementButton);
     expect(canvas.getByText("Count: 10")).toBeInTheDocument();
-  }
+  },
 };
 
 /**
@@ -106,5 +106,5 @@ export const MultipleOperations: Story = {
     await userEvent.click(decrementButton);
     await userEvent.click(decrementButton);
     expect(canvas.getByText("Count: 1")).toBeInTheDocument();
-  }
+  },
 };

@@ -1,10 +1,14 @@
 import { z } from "zod";
-import type { UserWithRelations } from "./UserSchema";
-import type { UserPartialWithRelations } from "./UserSchema";
-import type { UserOptionalDefaultsWithRelations } from "./UserSchema";
-import { UserWithRelationsSchema } from "./UserSchema";
-import { UserPartialWithRelationsSchema } from "./UserSchema";
-import { UserOptionalDefaultsWithRelationsSchema } from "./UserSchema";
+import {
+  UserWithRelationsSchema,
+  UserPartialWithRelationsSchema,
+  UserOptionalDefaultsWithRelationsSchema,
+} from "./UserSchema";
+import type {
+  UserWithRelations,
+  UserPartialWithRelations,
+  UserOptionalDefaultsWithRelations,
+} from "./UserSchema";
 
 /////////////////////////////////////////
 // PURCHASE SCHEMA

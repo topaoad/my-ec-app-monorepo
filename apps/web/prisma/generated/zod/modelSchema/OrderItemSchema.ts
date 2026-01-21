@@ -1,10 +1,14 @@
 import { z } from "zod";
-import type { OrderWithRelations } from "./OrderSchema";
-import type { OrderPartialWithRelations } from "./OrderSchema";
-import type { OrderOptionalDefaultsWithRelations } from "./OrderSchema";
-import { OrderWithRelationsSchema } from "./OrderSchema";
-import { OrderPartialWithRelationsSchema } from "./OrderSchema";
-import { OrderOptionalDefaultsWithRelationsSchema } from "./OrderSchema";
+import {
+  OrderWithRelationsSchema,
+  OrderPartialWithRelationsSchema,
+  OrderOptionalDefaultsWithRelationsSchema,
+} from "./OrderSchema";
+import type {
+  OrderWithRelations,
+  OrderPartialWithRelations,
+  OrderOptionalDefaultsWithRelations,
+} from "./OrderSchema";
 
 /////////////////////////////////////////
 // ORDER ITEM SCHEMA

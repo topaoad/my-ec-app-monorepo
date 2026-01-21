@@ -91,7 +91,8 @@ export const LongInput: Story = {
     const canvas = within(canvasElement);
 
     const input = canvas.getByPlaceholderText("Enter text");
-    const longText = "This is a very long input text to test how the form handles lengthy content...";
+    const longText =
+      "This is a very long input text to test how the form handles lengthy content...";
 
     // 長文の入力をシミュレート
     await userEvent.type(input, longText);
