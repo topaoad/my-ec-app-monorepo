@@ -5,12 +5,12 @@ import { prisma } from "../libs/prisma";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
+  if (!session || !session.user || !session.user.email) {
     return <div>アクセスが拒否されました</div>;
   }
 
   const user = await prisma.user.findUnique({
-    where: { email: session.user.email ?? undefined },
+    where: { email: session.user.email },
   });
 
   if (!user) {
