@@ -1,4 +1,4 @@
-import { Product } from "@/app/libs/microcms";
+import type { Product } from "@/app/libs/microcms";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
@@ -57,7 +57,8 @@ export const cleanupCartAtom = atom(
   null,
   (get, set, validProductIds: string[]) => {
     const cart = get(cartAtom);
-    const validCart = cart.filter((item) => validProductIds.includes(item.id));
+    const validIdSet = new Set(validProductIds);
+    const validCart = cart.filter((item) => validIdSet.has(item.id));
     if (validCart.length !== cart.length) {
       set(cartAtom, validCart);
     }

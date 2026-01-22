@@ -4,22 +4,22 @@ import type { Product } from "@/app/libs/microcms";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  cartAtom,
   type CartItem,
+  cartAtom,
   cleanupCartAtom,
   removeFromCartAtom,
   updateCartQuantityAtom,
 } from "@/store/cartAtom";
 import { useAtom, useAtomValue } from "jotai";
-import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, type FC } from "react";
+import { type FC, useEffect, useMemo, useState } from "react";
 import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
+
 interface CartBodyProps {
-  products: MicroCMSListResponse<Product>["contents"];
+  products: Product[];
 }
 
 const CartBody: FC<CartBodyProps> = ({ products }) => {
@@ -37,13 +37,19 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
     setIsClient(true);
   }, []);
 
+  // productIdsをメモ化して不要な再実行を防止
+  const validProductIds = useMemo(
+    () => products.map((p) => p.id),
+    [products],
+  );
+
   // カート内の無効な商品（microCMSに存在しない商品）をクリーンアップ
+  // products配列が空の場合もクリーンアップを実行（全商品削除時に対応）
   useEffect(() => {
-    if (isClient && products.length > 0) {
-      const validProductIds = products.map((p) => p.id);
+    if (isClient) {
       cleanupCart(validProductIds);
     }
-  }, [isClient, products, cleanupCart]);
+  }, [isClient, validProductIds, cleanupCart]);
 
   const cartItems: CartItem[] = useMemo(() => {
     if (!isClient) {
