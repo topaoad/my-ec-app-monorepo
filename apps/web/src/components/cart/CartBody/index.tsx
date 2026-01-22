@@ -1,21 +1,22 @@
 "use client";
 
-import { Product } from "@/app/libs/microcms";
+import type { Product } from "@/app/libs/microcms";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   cartAtom,
-  CartItem,
+  type CartItem,
+  cleanupCartAtom,
   removeFromCartAtom,
   updateCartQuantityAtom,
 } from "@/store/cartAtom";
 import { useAtom, useAtomValue } from "jotai";
-import { MicroCMSListResponse } from "microcms-js-sdk";
+import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FC, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { CheckoutModalV2 } from "../../Modal/CheckoutModalV2";
 interface CartBodyProps {
   products: MicroCMSListResponse<Product>["contents"];
@@ -26,6 +27,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   const cart = useAtomValue(cartAtom);
   const [, updateCartQuantity] = useAtom(updateCartQuantityAtom);
   const [, removeFromCart] = useAtom(removeFromCartAtom);
+  const [, cleanupCart] = useAtom(cleanupCartAtom);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -34,6 +36,14 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // カート内の無効な商品（microCMSに存在しない商品）をクリーンアップ
+  useEffect(() => {
+    if (isClient && products.length > 0) {
+      const validProductIds = products.map((p) => p.id);
+      cleanupCart(validProductIds);
+    }
+  }, [isClient, products, cleanupCart]);
 
   const cartItems: CartItem[] = useMemo(() => {
     if (!isClient) {

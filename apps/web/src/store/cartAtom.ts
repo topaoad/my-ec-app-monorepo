@@ -51,3 +51,15 @@ export const updateCartQuantityAtom = atom(
 export const clearCartAtom = atom(null, (get, set) => {
   set(cartAtom, []);
 });
+
+// 無効な商品（microCMSに存在しない商品）をカートから削除
+export const cleanupCartAtom = atom(
+  null,
+  (get, set, validProductIds: string[]) => {
+    const cart = get(cartAtom);
+    const validCart = cart.filter((item) => validProductIds.includes(item.id));
+    if (validCart.length !== cart.length) {
+      set(cartAtom, validCart);
+    }
+  },
+);
