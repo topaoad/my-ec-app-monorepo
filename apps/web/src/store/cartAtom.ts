@@ -1,4 +1,4 @@
-import { Product } from "@/app/libs/microcms";
+import type { Product } from "@/app/libs/microcms";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
@@ -51,3 +51,16 @@ export const updateCartQuantityAtom = atom(
 export const clearCartAtom = atom(null, (get, set) => {
   set(cartAtom, []);
 });
+
+// 無効な商品（microCMSに存在しない商品）をカートから削除
+export const cleanupCartAtom = atom(
+  null,
+  (get, set, validProductIds: string[]) => {
+    const cart = get(cartAtom);
+    const validIdSet = new Set(validProductIds);
+    const validCart = cart.filter((item) => validIdSet.has(item.id));
+    if (validCart.length !== cart.length) {
+      set(cartAtom, validCart);
+    }
+  },
+);

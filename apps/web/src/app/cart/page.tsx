@@ -1,8 +1,8 @@
-import { listProducts } from "@/app/libs/microcms";
+import { getProducts } from "@/app/libs/microcms";
 import CartBody from "../../components/cart/CartBody";
 
 const CartPage = async () => {
-  const { contents: products } = await listProducts();
+  const products = await getProducts();
 
   return (
     <div>
