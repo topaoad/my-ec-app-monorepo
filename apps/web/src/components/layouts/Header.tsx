@@ -35,7 +35,6 @@ const Header: React.FC = () => {
   const handleNavItemClick = (href: string) => {
     if (!session && href !== "/" && href !== "/cart") {
       router.push(`/signin?callbackUrl=${encodeURIComponent(href)}`);
-      // router.push("/signin");
     } else {
       router.push(href);
     }
