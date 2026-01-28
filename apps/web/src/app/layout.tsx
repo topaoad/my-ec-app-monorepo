@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Suspense } from "react";
 import CustomContainer from "../components/CustomContainer";
 import MantineProviderWrapper from "../components/MantineProvider";
 import TanStackProvider from "../components/TanStackProvider";
@@ -33,11 +32,7 @@ export default function RootLayout({
               <MantineProviderWrapper>
                 <ToastProvider>
                   <Header />
-                  <CustomContainer>
-                    <Suspense fallback={<div>loading...</div>}>
-                      {children}
-                    </Suspense>
-                  </CustomContainer>
+                  <CustomContainer>{children}</CustomContainer>
                   <Toaster />
                 </ToastProvider>
               </MantineProviderWrapper>
