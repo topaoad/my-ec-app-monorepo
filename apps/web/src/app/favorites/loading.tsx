@@ -1,5 +1,5 @@
-import { CartSkeleton } from "@/components/ui/loading-skeleton";
+import { FavoritesSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function Loading() {
-  return <CartSkeleton />;
+  return <FavoritesSkeleton />;
 }

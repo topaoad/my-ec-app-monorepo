@@ -1,5 +1,5 @@
-import { FormSkeleton } from "@/components/ui/loading-skeleton";
+import { SignInSkeleton } from "@/components/ui/loading-skeleton";
 
 export default function Loading() {
-  return <FormSkeleton />;
+  return <SignInSkeleton />;
 }
