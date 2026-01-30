@@ -38,10 +38,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   }, []);
 
   // productIdsをメモ化して不要な再実行を防止
-  const validProductIds = useMemo(
-    () => products.map((p) => p.id),
-    [products],
-  );
+  const validProductIds = useMemo(() => products.map((p) => p.id), [products]);
 
   // カート内の無効な商品（microCMSに存在しない商品）をクリーンアップ
   // products配列が空の場合もクリーンアップを実行（全商品削除時に対応）
@@ -92,7 +89,7 @@ const CartBody: FC<CartBodyProps> = ({ products }) => {
   };
 
   if (!isClient) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
